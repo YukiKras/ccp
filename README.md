@@ -6,6 +6,8 @@
 
 Console Control Panel is a convenient, lightweight, secure, simple Linux control panel. Its main feature is communication with the user via the console, which significantly improves security compared to other control panels. This control panel was inspired by the sconfig utility.
 
+The roadmap can be found [here](https://consolecp.kiselev.ru.net/Roadmap)
+
 ## Install
 
 Enter:
