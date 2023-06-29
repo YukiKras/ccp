@@ -1,11 +1,10 @@
-## О проекте
+## About the project
 
-Console Control Panel - удобная, лёгкая, безопасная, простая Linux панель управления. Главной ее особеностью является общение с пользователем через консоль, что в разы улучшает безопасность по сравнению с другими панелями управления. Эта панель управления была вдохновлена утилитой sconfig.
+Console Control Panel is a convenient, lightweight, secure, simple Linux control panel. Its main feature is communication with the user via the console, which significantly improves security compared to other control panels. This control panel was inspired by the msconfig utility.
 
-## Ссылки
+## Links
 
-- [Вики](https://consolecp.kiselev.ru.net/)
+- [Wiki](https://consolecp.kiselev.ru.net/)
 - [Telegram EN](https://t.me/ccplen)
-- [Телеграм РУ](https://t.me/ccplru)
-- [Вконтакте](https://vk.com/consolecp)
+- [Vkontakte](https://vk.com/consolecp)
 - [Discord](https://discord.gg/Nc6qDeSb9q)
