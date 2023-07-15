@@ -19,7 +19,7 @@ unzip /opt/ccp/ccp.zip -d /opt/ccp
 mv /opt/ccp/ccp-main/* /opt/ccp
 rm -rf /opt/ccp/ccp-main
 rm /opt/ccp/ccp.zip
-rm /opt/ccp/installccp.sh
+rm /opt/ccp/installcсp.sh
 
 # Установка прав доступа
 chmod -R 755 /opt/ccp

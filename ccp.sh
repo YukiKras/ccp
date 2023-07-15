@@ -330,6 +330,7 @@ done
 }
 
 manage_mysql_users () {
+while true; do
   clear
   tput cup $(tput lines) 0
   read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
@@ -460,6 +461,7 @@ fi
 }
 
 mysql_manage_db () {
+while true; do
   clear
   tput cup $(tput lines) 0
   read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
