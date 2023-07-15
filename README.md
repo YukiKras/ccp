@@ -15,6 +15,7 @@ The roadmap can be found [here](https://consolecp.kiselev.ru.net/Roadmap)
 3. Host resource management
 4. Firewall (UFW) management
 5. Mysql management
+6. Email server management (exim, postfix)
 
 ## Install
 
