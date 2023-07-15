@@ -17,6 +17,11 @@ The roadmap can be found [here](https://consolecp.kiselev.ru.net/Roadmap)
 5. Mysql management
 6. Email server management (exim, postfix)
 
+## System requirements
+
+Supported distributions at the moment are only: Ubuntu and Debian
+In the future, it is planned to add CentOS support
+
 ## Install
 
 Enter:
@@ -27,6 +32,15 @@ and
 ```
 bash ./installccp.sh
 ```
+
+## How to support the project?
+
++ Help with translation - if you are ready to translate ConsoleCP on a regular basis, you will contribute to its distribution
++ Distribute - to your colleagues and friends
++ Help in the implementation of things from the roadmap - you will speed up its development
++ Write your suggestions, problems and bugs with ConsoleCP to the community, links to them can be found below
++ Financially support - so far it is possible through [trade on Steam](https://steamcommunity.com/tradeoffer/new/?partner=1041043022&token=B7cef1Mr )
+
 ## Links
 
 - [Wiki](https://consolecp.kiselev.ru.net/)
