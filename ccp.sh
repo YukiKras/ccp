@@ -284,6 +284,327 @@ load_language_resources() {
     source "$lang_file"  # Загрузка языковых ресурсов
 }
 
+mysql_manage() {
+while true; do
+  if ! command -v mysql &> /dev/null; then
+      clear
+      echo "$NON_MYSQL"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        apt-get install mysql-server
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+      echo " "
+      fi
+  clear
+  echo "$SELECT_ACTION"
+  echo "1. $MYSQL_MANAGE_MENU1"
+  echo "2. $MYSQL_MANAGE_MENU2"
+  echo "3. $MYSQL_MANAGE_MENU3"
+  echo "0. $BACK"
+  tput cup $(tput lines) 0
+  read -p "$ENTER_NUMBER" choice
+  case $choice in
+    1)
+      manage_mysql_users
+      ;;
+    2)
+      mysql_manage_db
+      ;;
+    3)
+      run_mysql_autofix
+      ;;
+    0)
+      break
+      ;;
+    *)
+      echo "$FAIL_CHOISE"
+      ;;
+  esac
+done
+}
+
+manage_mysql_users () {
+  clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
+  clear
+  echo "$SELECT_ACTION"
+  echo "1. $MYSQL_USERS_MANAGE_MENU1"
+  echo "2. $MYSQL_USERS_MANAGE_MENU2"
+  echo "3. $MYSQL_USERS_MANAGE_MENU3"
+  echo "0. $BACK"
+  echo " "
+  # Переменные для подключения к MySQL
+  MYSQL_HOST="localhost"
+  MYSQL_USER="root"
+  # Запрос для получения списка пользователей
+  QUERY="SELECT User FROM mysql.user;"
+  # Выполнение команды MySQL и получение списка пользователей
+  USERS=$(mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent)
+  # Проверка успешности выполнения команды MySQL
+  if [ $? -eq 0 ]; then
+  echo "$MYSQL_USERS_LIST"
+  echo "${USERS}"
+  else
+  echo "$MYSQL_USERS_LIST_ERROR"
+  fi
+  tput cup $(tput lines) 0
+  read -p "$ENTER_NUMBER" choice
+  case $choice in
+    1)
+      clear
+      read -p "$ENTER_USERNAME " username_mysql
+      read -p "$ENTER_PASSWORD " password_user_mysql
+      create_mysql_users $username_mysql $password_user_mysql
+      ;;
+    2)
+      clear
+      read -p "$ENTER_USERNAME " username_mysql
+      delete_mysql_users $username_mysql
+      ;;
+    3)
+      clear
+      read -p "$ENTER_USERNAME " username_mysql
+      read -p "$ENTER_NEW_PASSWORD " password_user_mysql
+      change_mysql_users_password $username_mysql $password_user_mysql
+      ;;
+    0)
+      break
+      ;;
+    *)
+      echo "$FAIL_CHOISE"
+      ;;
+  esac
+done
+}
+
+create_mysql_users () {
+    clear
+    username_mysql=$1
+    password_user_mysql=$2
+    
+    # Проверка существования пользователя
+    exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
+    
+    if [ $exists -eq 1 ]; then
+        echo "$MYSQL_USER_EXISTS"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    fi
+    
+    # Создание пользователя
+    mysql -u root -p $MYSQL_PASSWORD -e "CREATE USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';"
+    
+    # Обновление привилегий
+    mysql -u root -p $MYSQL_PASSWORD -e "FLUSH PRIVILEGES;"
+    
+    echo "$CHANGE_SUCCSESS"
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+
+}
+
+delete_mysql_users () {
+    clear
+    username_mysql=$1
+    
+    # Проверка существования пользователя
+    exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
+    
+    if [ $exists -eq 0 ]; then
+        echo "$MYSQL_USER_NON_EXISTS"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    fi
+    
+    # Удаление пользователя
+    mysql -u root -p $MYSQL_PASSWORD -e "DROP USER '$username_mysql'@'localhost';"
+    
+    # Обновление привилегий
+    mysql -u root -p $MYSQL_PASSWORD -e "FLUSH PRIVILEGES;"
+    
+    echo "$CHANGE_SUCCSESS"
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+
+}
+
+change_mysql_users_password () {
+  clear
+  username_mysql=$1
+  password_user_mysql=$2
+# Проверка существования пользователя
+    exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
+    
+    if [ $exists -eq 0 ]; then
+        echo "$MYSQL_USER_NON_EXISTS"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    fi
+    
+    # Удаление пользователя
+    mysql -u root -p $MYSQL_PASSWORD -e "ALTER USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';"
+    mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
+
+# Проверяем статус выполнения команды MySQL
+if [ $? -eq 0 ]; then
+  echo "$CHANGE_SUCCSESS"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+else
+  echo "$CHANGE_FAILED"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+fi
+
+}
+
+mysql_manage_db () {
+  clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
+  clear
+  echo "$SELECT_ACTION"
+  echo "1. $MYSQL_DB_MANAGE_MENU1"
+  echo "2. $MYSQL_DB_MANAGE_MENU2"
+  echo "3. $MYSQL_DB_MANAGE_MENU3"
+  echo "4. $MYSQL_DB_MANAGE_MENU4"
+  echo "0. $BACK"
+  echo " "
+  # Выполнение команды MySQL и получение списка баз данных
+  DATABASES=$(mysql -h "localhost" -u "root" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" --silent)
+  # Проверка успешности выполнения команды MySQL
+  if [ $? -eq 0 ]; then
+  echo "$MYSQL_DB_LIST"
+  echo "${DATABASES}"
+  else
+  echo "$MYSQL_DB_LIST_ERROR"
+  fi
+  tput cup $(tput lines) 0
+  read -p "$ENTER_NUMBER" choice
+  case $choice in
+    1)
+      clear
+      read -p "$ENTER_USERNAME " username_mysql
+      read -p "$ENTER_NEW_PASSWORD " password_user_mysql
+      read -p "$ENTER_DB_NAME " database_mysql_name
+      create_mysql_db $username_mysql $password_user_mysql $database_mysql_name
+      ;;
+    2)
+      clear
+      read -p "$ENTER_DB_NAME " database_mysql_name
+      delete_mysql_db $database_mysql_name
+      ;;
+    3)
+      clear
+      read -p "$ENTER_USERNAME " username_mysql
+      read -p "$ENTER_PASSWORD " password_user_mysql
+      read -p "$ENTER_DB_NAME " database_mysql_name
+      bind_mysql_db $username_mysql $password_user_mysql $database_mysql_name
+      ;;
+    4)
+      clear
+      read -p "$ENTER_USERNAME " username_mysql
+      read -p "$ENTER_DB_NAME " database_mysql_name
+      unbind_mysql_db $username_mysql $database_mysql_name
+      ;;
+    0)
+      break
+      ;;
+    *)
+      echo "$FAIL_CHOISE"
+      ;;
+  esac
+done
+}
+
+create_mysql_db () {
+clear
+  username_mysql=$1
+  password_user_mysql=$2
+  database_mysql_name=$3
+# Создание базы данных
+mysql -u root -p $MYSQL_PASSWORD -e "CREATE DATABASE $database_mysql_name;"
+mysql -u root -p $MYSQL_PASSWORD -e "grant all privileges on $database_mysql_name.* to $username_mysql@localhost identified by '$password_user_mysql';"
+mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
+if [ $? -eq 0 ]; then
+  echo "$CHANGE_SUCCSESS"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+else
+  echo "$CHANGE_FAILED"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+fi
+}
+
+delete_mysql_db () {
+  clear
+  database_mysql_name=$1
+  mysql -u root -p $MYSQL_PASSWORD -e "DROP DATABASE $database_mysql_name;"
+  mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
+if [ $? -eq 0 ]; then
+  echo "$CHANGE_SUCCSESS"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+else
+  echo "$CHANGE_FAILED"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+fi
+}
+
+bind_mysql_db () {
+  clear
+  username_mysql=$1
+  password_user_mysql=$2
+  database_mysql_name=$3
+  mysql -u root -p $MYSQL_PASSWORD -e "grant all privileges on $database_mysql_name.localhost to $username_mysql@localhost identified by '$password_user_mysql';"
+  mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
+  if [ $? -eq 0 ]; then
+  echo "$CHANGE_SUCCSESS"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  else
+  echo "$CHANGE_FAILED"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  fi
+}
+
+unbind_mysql_db () {
+  clear
+  username_mysql=$1
+  database_mysql_name=$2
+  mysql -u root -p $MYSQL_PASSWORD -e "REVOKE ALL PRIVILEGES ON $database_mysql_name.localhost FROM $username_mysql@localhost;"
+  mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
+  if [ $? -eq 0 ]; then
+  echo "$CHANGE_SUCCSESS"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  else
+  echo "$CHANGE_FAILED"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  fi
+}
+
+run_mysql_autofix() {
+    if ! command -v mysql &> /dev/null; then
+      clear
+      echo "$NON_SCREEN"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        apt-get install screen
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+      echo " "
+      fi
+    clear
+    read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+    screen -dmS mysql_autofix bash -c mysqlcheck --all-databases --auto-repair --optimize --user=root --password=$MYSQL_PASSWORD
+    echo "$RUN_SUCCSESS"
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+}
+
 # Основное меню
 while true; do
 
@@ -301,6 +622,8 @@ load_language_resources
     echo "3. $MAIN_MENU3"
     echo "4. $MAIN_MENU4"
     echo "5. $MAIN_MENU5"
+    echo "6. $MAIN_MENU6"
+    #echo "7. $MAIN_MENU7"
     echo "0. $LEXIT"
 
     tput cup $(tput lines) 0
@@ -322,6 +645,12 @@ load_language_resources
         5)
             change_language
             ;;
+        6)
+            mysql_manage
+            ;;
+        #7)  
+        #    email_manage
+        #    ;;
         0)
             exit 0
             ;;
