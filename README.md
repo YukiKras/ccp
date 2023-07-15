@@ -8,13 +8,24 @@ Console Control Panel is a convenient, lightweight, secure, simple Linux control
 
 The roadmap can be found [here](https://consolecp.kiselev.ru.net/Roadmap)
 
+## Opportunities
+
+1. Reboot and shutdown host
+2. Network management
+3. Host resource management
+4. Firewall (UFW) management
+5. Mysql management
+
 ## Install
 
 Enter:
 ```
-wget https://github.com/NagibatorIgor/ccp/releases/download/alpha/installccp.sh | bash ./installccp.sh
+wget https://github.com/NagibatorIgor/ccp/releases/download/alpha/installccp.sh
 ```
-
+and
+```
+bash ./installccp.sh
+```
 ## Links
 
 - [Wiki](https://consolecp.kiselev.ru.net/)

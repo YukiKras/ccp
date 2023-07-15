@@ -307,7 +307,7 @@ while true; do
       read -p "$LIKE_INSTALL" -n 1 apply_changes
       if [[ $apply_changes == "1" ]]; then
         wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb -P /tmp
-        dpkg -i mysql-apt-config_0.8.22-1_all.deb
+        dpkg -i /tmp/mysql-apt-config_0.8.22-1_all.deb
         apt update 
         apt install mysql-server
         rm /tmp/mysql-apt-config_0.8.22-1_all.deb
