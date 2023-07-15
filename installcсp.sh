@@ -27,6 +27,7 @@ rm /opt/ccp/installcсp.sh
 chmod -R 755 /opt/ccp
 
 # Обновление текущего окружения
+echo 'export PATH="/opt/ccp:$PATH"' >> /etc/profile
 cat >> ~/.bashrc << 'EOF'
 alias ccp="/opt/ccp/ccp.sh"
 EOF

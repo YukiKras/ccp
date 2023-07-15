@@ -306,6 +306,7 @@ while true; do
       tput cup $(tput lines) 0
       read -p "$LIKE_INSTALL" -n 1 apply_changes
       if [[ $apply_changes == "1" ]]; then
+        apt install gnupng
         wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb -P /tmp
         dpkg -i /tmp/mysql-apt-config_0.8.22-1_all.deb
         apt update 
@@ -405,6 +406,10 @@ done
 }
 
 create_mysql_users () {
+  clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
     clear
     username_mysql=$1
     password_user_mysql=$2
@@ -429,6 +434,10 @@ create_mysql_users () {
 }
 
 delete_mysql_users () {
+  clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
     clear
     username_mysql=$1
     
@@ -452,6 +461,10 @@ delete_mysql_users () {
 }
 
 change_mysql_users_password () {
+  clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
   clear
   username_mysql=$1
   password_user_mysql=$2
@@ -541,12 +554,16 @@ done
 
 create_mysql_db () {
 clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
+clear
   username_mysql=$1
   password_user_mysql=$2
   database_mysql_name=$3
 # Создание базы данных
 mysql -u root -p $MYSQL_PASSWORD -e "CREATE DATABASE $database_mysql_name;"
-mysql -u root -p $MYSQL_PASSWORD -e "grant all privileges on $database_mysql_name.* to $username_mysql@localhost identified by '$password_user_mysql';"
+mysql -u root -p $MYSQL_PASSWORD -e "grant all privileges on $database_mysql_name.localhost to $username_mysql@localhost identified by '$password_user_mysql';"
 mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
 if [ $? -eq 0 ]; then
   echo "$CHANGE_SUCCSESS"
@@ -558,6 +575,10 @@ fi
 }
 
 delete_mysql_db () {
+clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
   clear
   database_mysql_name=$1
   mysql -u root -p $MYSQL_PASSWORD -e "DROP DATABASE $database_mysql_name;"
@@ -572,6 +593,10 @@ fi
 }
 
 bind_mysql_db () {
+clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
   clear
   username_mysql=$1
   password_user_mysql=$2
@@ -588,6 +613,10 @@ bind_mysql_db () {
 }
 
 unbind_mysql_db () {
+  clear
+  tput cup $(tput lines) 0
+  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  echo
   clear
   username_mysql=$1
   database_mysql_name=$2
