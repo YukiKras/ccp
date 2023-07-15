@@ -77,3 +77,4 @@ export MYSQL_DB_MANAGE_MENU4="Отвязать БД от mysql пользова�
 export ENTER_DB_NAME="Введите имя БД:"
 export NON_SCREEN="Пакет screen не установлен."
 export RUN_SUCCSESS="Действие успешно запущено."
+export NON_NET_TOOLS="Пакет net-tools не установлен."

@@ -11,6 +11,8 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
+apt install unzip
+
 # Создание директории /opt/ccp
 mkdir -p /opt/ccp
 
@@ -24,10 +26,12 @@ rm /opt/ccp/installcсp.sh
 # Установка прав доступа
 chmod -R 755 /opt/ccp
 
-# Добавление PATH для /opt/ccp/ccp.sh
-echo 'export PATH="/opt/ccp:$PATH"' >> /etc/profile
-
 # Обновление текущего окружения
+cat >> ~/.bashrc << 'EOF'
+alias ccp="/opt/ccp/ccp.sh"
+EOF
+# Обновляем текущую оболочку
+source ~/.bashrc
 source /etc/profile
 
 # Запрос языка установки

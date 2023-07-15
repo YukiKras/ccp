@@ -225,9 +225,23 @@ manage_resources() {
       kill $pid
       ;;
     3)
+      if ! command -v netstat &> /dev/null; then
       clear
-      netstat -ltupan
-      read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      echo "$NON_NET_TOOLS"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        # Установка пакета htop
+        apt-get install htop
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+        netstat -ltupan
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
       ;;
     0)
       break
@@ -267,16 +281,16 @@ change_language() {
 }
 
 load_language_resources() {
-    local lang_file="./lang/ccp_en.sh"  # По умолчанию используется английский язык
+    local lang_file="/opt/ccp/lang/ccp_en.sh"  # По умолчанию используется английский язык
 
-    if [ -f "lang.config" ]; then
-        lang_code=$(cat "lang.config")  # Чтение выбранного языка из файла
+    if [ -f "/opt/ccp/lang.config" ]; then
+        lang_code=$(cat "/opt/ccp/lang.config")  # Чтение выбранного языка из файла
         case $lang_code in
             "en")
-                lang_file="./lang/ccp_en.sh"
+                lang_file="/opt/ccp/lang/ccp_en.sh"
                 ;;
             "ru")
-                lang_file="./lang/ccp_ru.sh"
+                lang_file="/opt/ccp/lang/ccp_ru.sh"
                 ;;
         esac
     fi
@@ -292,7 +306,11 @@ while true; do
       tput cup $(tput lines) 0
       read -p "$LIKE_INSTALL" -n 1 apply_changes
       if [[ $apply_changes == "1" ]]; then
-        apt-get install mysql-server
+        wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb -P /tmp
+        dpkg -i mysql-apt-config_0.8.22-1_all.deb
+        apt update 
+        apt install mysql-server
+        rm /tmp/mysql-apt-config_0.8.22-1_all.deb
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
         echo "$CANCELL"
