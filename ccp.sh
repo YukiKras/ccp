@@ -758,7 +758,7 @@ unbind_mysql_db () {
 }
 
 run_mysql_autofix() {
-    if ! command -v mysql &> /dev/null; then
+    if ! command -v screen &> /dev/null; then
       clear
       echo "$NON_SCREEN"
       tput cup $(tput lines) 0

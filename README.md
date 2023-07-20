@@ -4,6 +4,8 @@
 
 ## About the project
 
+![Main menu ConsoleCP](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/main_en.png)
+
 Console Control Panel is a convenient, lightweight, secure, simple Linux control panel. Its main feature is communication with the user via the console, which significantly improves security compared to other control panels. This control panel was inspired by the sconfig utility.
 
 The roadmap can be found [here](https://consolecp.kiselev.ru.net/Roadmap)
@@ -17,6 +19,17 @@ The roadmap can be found [here](https://consolecp.kiselev.ru.net/Roadmap)
 5. Mysql management
 6. Email server management (exim, postfix)
 
+<details>
+   <summary>Screenshots</summary>
+
+![Manage menu Mysql](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/mysql_en.png)
+
+![Manage menu Internet](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/network_en.png)
+
+![Manage menu host](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/resources_en.png)
+
+   </details>
+
 ## System requirements
 
 Supported distributions at the moment are only: Ubuntu and Debian
@@ -26,7 +39,7 @@ In the future, it is planned to add CentOS support
 
 Enter:
 ```
-wget https://github.com/NagibatorIgor/ccp/releases/download/alpha/installccp.sh
+wget https://raw.githubusercontent.com/NagibatorIgor/ccp/main/installc%D1%81p.sh
 ```
 and
 ```
