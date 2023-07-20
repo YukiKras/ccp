@@ -10,6 +10,8 @@ Console Control Panel is a convenient, lightweight, secure, simple Linux control
 
 The roadmap can be found [here](https://github.com/NagibatorIgor/ccp/blob/main/wiki/en/roadmap.md)
 
+A list of third-party scripts used can be found [here](https://github.com/NagibatorIgor/ccp/blob/main/wiki/en/third_party_repos.md)
+
 ## Opportunities
 
 1. Reboot and shutdown host

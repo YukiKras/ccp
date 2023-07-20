@@ -989,6 +989,7 @@ if ! command -v exim4 &> /dev/null; then
       if [[ $apply_changes == "1" ]]; then
         apt install gnupng
         apt install postfix
+        echo "$CHANGE_SUCCSESS"
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
         echo "$CANCELL"
@@ -1116,50 +1117,40 @@ if [ -f "/root/wireguard-install.sh" ]; then
   clear
   /root/wireguard-install.sh
 else
-  wget -P /root https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
-  chmod +x /root/wireguard-install.sh
+  clear
+      echo "$NON_WIREGUARD"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+  if [ "$apply_changes" == "1" ]; then
+    wget -P /root https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
+    chmod +x /root/wireguard-install.sh
+    echo "$CHANGE_SUCCSESS"
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  else
+    echo "$CANCELL"
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  fi
 fi
-#  if [ -f "/root/wireguard-install.sh" ]; then
-#     clear
-#      echo "$NON_WIREGUARD"
-#      tput cup $(tput lines) 0
-#      read -p "$LIKE_INSTALL" -n 1 apply_changes
-#      if [[ $apply_changes == "1" ]]; then
-#        wget -P /root https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
-#        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-#      else
-#        echo "$CANCELL"
-#        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-#      fi
-#      else
-#        clear
-#        /root/wireguard-install.sh
-#      fi
   ;;
   2)
   if [ -f "/root/openvpn-install.sh" ]; then
   clear
   /root/openvpn-install.sh
 else
-  wget -P /root https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
-  chmod +x /root/openvpn-install.sh
+  clear
+      echo "$NON_OPENVPN"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+  if [ "$apply_changes" == "1" ]; then
+    wget -P /root https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
+    chmod +x /root/openvpn-install.sh
+    echo "$CHANGE_SUCCSESS"
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  else
+    echo "$CANCELL"
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  fi
 fi
-  #if [ -f "/root/openvpn-install.sh" ]; then
-  #    clear
-  #    echo "$NON_OPENVPN"
-  #    tput cup $(tput lines) 0
-  #    read -p "$LIKE_INSTALL" -n 1 apply_changes
-  #    if [[ $apply_changes == "1" ]]; then
-  #      wget -P /root https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
-  #      read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-  #    else
-  #      echo "$CANCELL"
-  #      read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-  #    fi
-  #    else
-  #      clear
-  #      /root/openvpn-install.sh
-  #    fi
   ;;
   0)
   break
@@ -1169,6 +1160,15 @@ fi
   ;;
   esac
   done
+}
+
+# Функция для центровки текста
+echoc() {
+    local text="$1"
+    local width="$2"
+    local padding=$(( (width - ${#text}) / 2 ))
+    printf "%*s%s%*s
+" $padding "" "$text" $padding ""
 }
 
 # Основное меню
@@ -1181,19 +1181,27 @@ load_language_resources
   echo "$NON_ROOT" 
   exit 1
   fi
-#    width=$(tput cols)
+# Определение количества символов в строке терминала
+cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
     clear
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    #echoc "        ___                      _        ___   ___ "
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
+    #echo "========================================================="
     echo ""
-    echo "                 $MAIN_MENU"
+    echoc "$MAIN_MENU" $width
     echo ""
-    echo "========================================================="
+    echo $line
+    #echo "========================================================="
     echo ""
     echo "              1. $MAIN_MENU1"
     echo "              2. $MAIN_MENU2"
