@@ -1113,7 +1113,10 @@ vpn_manage () {
   case $choice in
   1)
   if [ -f "/root/wireguard-install.sh" ]; then
-      clear
+  clear
+  /root/wireguard-install.sh
+else
+clear
       echo "$NON_WIREGUARD"
       tput cup $(tput lines) 0
       read -p "$LIKE_INSTALL" -n 1 apply_changes
@@ -1125,14 +1128,32 @@ vpn_manage () {
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       fi
       else
-        clear
-        /root/wireguard-install.sh
+      break
       fi
+#  if [ -f "/root/wireguard-install.sh" ]; then
+#     clear
+#      echo "$NON_WIREGUARD"
+#      tput cup $(tput lines) 0
+#      read -p "$LIKE_INSTALL" -n 1 apply_changes
+#      if [[ $apply_changes == "1" ]]; then
+#        wget -P /root https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
+#        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+#      else
+#        echo "$CANCELL"
+#        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+#      fi
+#      else
+#        clear
+#        /root/wireguard-install.sh
+#      fi
   ;;
   2)
   if [ -f "/root/openvpn-install.sh" ]; then
-      clear
-      echo "$NON_OPENVPN"
+  clear
+  /root/openvpn-install.sh
+else
+clear
+      echo "$NON_WIREGUARD"
       tput cup $(tput lines) 0
       read -p "$LIKE_INSTALL" -n 1 apply_changes
       if [[ $apply_changes == "1" ]]; then
@@ -1143,9 +1164,24 @@ vpn_manage () {
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       fi
       else
-        clear
-        /root/openvpn-install.sh
+      break
       fi
+  #if [ -f "/root/openvpn-install.sh" ]; then
+  #    clear
+  #    echo "$NON_OPENVPN"
+  #    tput cup $(tput lines) 0
+  #    read -p "$LIKE_INSTALL" -n 1 apply_changes
+  #    if [[ $apply_changes == "1" ]]; then
+  #      wget -P /root https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
+  #      read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  #    else
+  #      echo "$CANCELL"
+  #      read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  #    fi
+  #    else
+  #      clear
+  #      /root/openvpn-install.sh
+  #    fi
   ;;
   0)
   break
