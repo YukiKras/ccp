@@ -44,7 +44,7 @@ external_ip=$(wget -qO- https://ipinfo.io/ip)
     echo ""
     echo $line
     echo ""
-    echo "                    1. $NETWORK_MENU1"
+    echo "                    1. $NETWORK_MENU1 $external_ip"
     echo "                    2. $NETWORK_MENU2"
     echo "                    3. $NETWORK_MENU3"
     echo "                    4. $NETWORK_MENU4"
