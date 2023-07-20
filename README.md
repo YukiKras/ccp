@@ -19,7 +19,7 @@ The roadmap can be found [here](https://consolecp.kiselev.ru.net/Roadmap)
 5. Mysql management
 6. Email server management (exim, postfix)
 
-<details>
+## <details>
    <summary>Screenshots</summary>
 
 ![Manage menu Mysql](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/mysql_en.png)
