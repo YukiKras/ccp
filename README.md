@@ -18,6 +18,7 @@ The roadmap can be found [here](https://github.com/NagibatorIgor/ccp/blob/main/w
 4. Firewall (UFW) management
 5. Mysql management
 6. Email server management (exim, postfix)
+7. VPN Management ([Wireguard](https://github.com/angristan/wireguard-install) and [OpenVPN](https://github.com/angristan/openvpn-install))
 
 <details>
   <summary>Screenshots</summary>

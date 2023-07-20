@@ -1090,6 +1090,73 @@ esac
 done
 }
 
+vpn_manage () {
+  while true; do
+    clear
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                 $SELECT_ACTION"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "              1. $VPN_MANAGE_MENU1"
+    echo "              2. $VPN_MANAGE_MENU2"
+    echo "              0. $BACK"
+  tput cup $(tput lines) 0
+  read -p "$ENTER_NUMBER" choice
+  case $choice in
+  1)
+  if [ -f "/root/wireguard-install.sh" ]; then
+      clear
+      echo "$NON_WIREGUARD"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        wget -P /root https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+        clear
+        /root/wireguard-install.sh
+      fi
+  ;;
+  2)
+  if [ -f "/root/openvpn-install.sh" ]; then
+      clear
+      echo "$NON_OPENVPN"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        wget -P /root https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+        clear
+        /root/openvpn-install.sh
+      fi
+  ;;
+  0)
+  break
+  ;;
+  *)
+  echo "$FAIL_CHOISE"
+  ;;
+  esac
+  done
+}
+
 # Основное меню
 while true; do
 
@@ -1100,7 +1167,7 @@ load_language_resources
   echo "$NON_ROOT" 
   exit 1
   fi
-    width=$(tput cols)
+#    width=$(tput cols)
     clear
     echo "        ___                      _        ___   ___ " 
     echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
@@ -1121,9 +1188,10 @@ load_language_resources
     echo "              4. $MAIN_MENU4"
     echo "              5. $MAIN_MENU5"
     echo "              6. $MAIN_MENU6"
-    echo ""
     echo "              7. $MAIN_MENU7"
+    echo ""
     echo "              8. $MAIN_MENU8"
+    echo "              9. $MAIN_MENU9"
     echo "              0. $LEXIT"
 
     tput cup $(tput lines) 0
@@ -1149,11 +1217,15 @@ load_language_resources
             mysql_manage
             ;;
         7)  
-            change_language
+            vpn_manage
             ;;
         8)
             mv /opt/ccp/update.sh /tmp/update.sh
+            clear
             /tmp/update.sh
+            ;;
+        9)  
+            change_language
             ;;
         0)
             clear
