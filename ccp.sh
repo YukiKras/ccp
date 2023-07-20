@@ -967,54 +967,29 @@ load_language_resources
   fi
     width=$(tput cols)
     clear
-    #echo "   ___                      _        ___   ___ " 
-    #echo "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    #echo " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    #echo "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    #echo "\____/\___/|_| |_|___/\___/|_|\___\____/\/     "
-    #echo "                                               "
-    #echo "==============================================="
-    #echo ""
-    #echo "                 $MAIN_MENU"
-    #echo ""
-    #echo "==============================================="
-    #echo ""
-    #echo "              1. $MAIN_MENU1"
-    #echo "              2. $MAIN_MENU2"
-    #echo ""
-    #echo "              3. $MAIN_MENU3"
-    #echo "              4. $MAIN_MENU4"
-    #echo "              5. $MAIN_MENU5"
-    #echo "              6. $MAIN_MENU6"
-    #echo ""
-    #echo "              7. $MAIN_MENU7"
-    #echo "              8. $MAIN_MENU8"
-    #echo "              0. $LEXIT"
-
-    center_text "   ___                      _        ___   ___ " $width
-    center_text "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
-    center_text " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
-    center_text "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
-    center_text "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
-    echo "" 
-    center_text "===============================================" $width
-    echo "" 
-    center_text "                 $MAIN_MENU" $width
-    echo "" 
-    center_text "===============================================" $width
-    echo "" 
-    center_text "              1. $MAIN_MENU1" $width
-    center_text "              2. $MAIN_MENU2" $width
-    echo "" 
-    center_text "              3. $MAIN_MENU3" $width
-    center_text "              4. $MAIN_MENU4" $width
-    center_text "              5. $MAIN_MENU5" $width
-    center_text "              6. $MAIN_MENU6" $width
-    echo "" 
-    center_text "              7. $MAIN_MENU7" $width
-    center_text "              8. $MAIN_MENU8" $width
-    center_text "              0. $LEXIT" $width
-
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                       $MAIN_MENU"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                    1. $MAIN_MENU1"
+    echo "                    2. $MAIN_MENU2"
+    echo ""
+    echo "                    3. $MAIN_MENU3"
+    echo "                    4. $MAIN_MENU4"
+    echo "                    5. $MAIN_MENU5"
+    echo "                    6. $MAIN_MENU6"
+    echo ""
+    echo "                    7. $MAIN_MENU7"
+    echo "                    8. $MAIN_MENU8"
+    echo "                    0. $LEXIT"
 
     tput cup $(tput lines) 0
     read -p "$ENTER_NUMBER" choice
