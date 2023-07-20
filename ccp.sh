@@ -1127,9 +1127,6 @@ clear
         echo "$CANCELL"
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       fi
-      else
-      read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-      fi
 #  if [ -f "/root/wireguard-install.sh" ]; then
 #     clear
 #      echo "$NON_WIREGUARD"
