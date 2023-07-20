@@ -7,6 +7,7 @@ rm -rf /opt/ccp/ccp-main
 rm /opt/ccp/ccp.zip
 rm /opt/ccp/installcсp.sh
 rm -rf /opt/ccp/screenshots
+rm -rf /opt/ccp/wiki
 
 # Установка прав доступа
 chmod -R 755 /opt/ccp
