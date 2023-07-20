@@ -1128,7 +1128,7 @@ clear
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       fi
       else
-      break
+      read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       fi
 #  if [ -f "/root/wireguard-install.sh" ]; then
 #     clear
