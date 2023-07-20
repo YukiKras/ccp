@@ -24,7 +24,7 @@ show_network_settings() {
 # Функция для настройки сети
 configure_network() {
     while true; do
-        clear
+    clear
     echo "        ___                      _        ___   ___ " 
     echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
     echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
@@ -104,7 +104,7 @@ configure_network() {
                 manage_firewall
                 ;;
             0)
-                exit 0
+                break
                 ;;
             *)
                 echo "$FAIL_CHOISE"
@@ -965,7 +965,7 @@ password_email_user=$2
 }
 
 email_manage () {
-if ! command -v exim &> /dev/null; then
+if ! command -v exim4 &> /dev/null; then
       clear
       echo "$NON_EXIM"
       tput cup $(tput lines) 0
@@ -997,7 +997,8 @@ if ! command -v exim &> /dev/null; then
       else
       echo " "
       fi
-clear
+    while true; do
+    clear
     echo "        ___                      _        ___   ___ " 
     echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
     echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
@@ -1086,6 +1087,7 @@ case $command in
         echo "$FAIL_CHOISE"
         ;;
 esac
+done
 }
 
 # Основное меню
