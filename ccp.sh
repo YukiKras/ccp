@@ -25,29 +25,30 @@ show_network_settings() {
 configure_network() {
     while true; do
     clear
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    # Определение количества символов в строке терминала
+cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
-    echo "                       $SELECT_ACTION"
+    echoc "$SELECT_ACTION" $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
     echo "                    1. $NETWORK_MENU1"
     echo "                    2. $NETWORK_MENU2"
     echo "                    3. $NETWORK_MENU3"
+    echo "                    4. $NETWORK_MENU4"
     echo ""
     echo "                    0. $BACK"
-        #echo "$SELECT_ACTION"
-        #echo "1. $NETWORK_MENU1"
-        #echo "2. $NETWORK_MENU2"
-        #echo "3. $NETWORK_MENU3"
-        #echo "0. $EXIT"
-
         tput cup $(tput lines) 0
         read -p "$ENTER_NUMBER" choice
 
@@ -103,6 +104,19 @@ configure_network() {
             3)
                 manage_firewall
                 ;;
+            4)
+                clear
+                read -p "$ENTER_NEW_HOSTNAME " hostname
+                hostnamectl set-hostname "$hostname"
+                echo "$CHANGE_SUCCSESS"
+                read -p "$LIKE_REBOOT " -n 1 apply_changes
+                if [ "$apply_changes" == "1" ]; then
+                reboot_host
+                else
+                echo "$CANCELL"
+                read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+                fi
+                ;;
             0)
                 break
                 ;;
@@ -133,23 +147,23 @@ manage_firewall() {
 
 while true; do
     clear
-    #echo "$SELECT_ACTION"
-    #echo "1. $UFW_MENU1"
-    #echo "2. $UFW_MENU2"
-    #echo "3. $UFW_MENU3"
-    #echo "4. $UFW_MENU4"
-    #echo "0. $BACK"
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+# Определение количества символов в строке терминала
+cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
-    echo "                       $SELECT_ACTION"
+    echoc "$SELECT_ACTION" $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
     echo "                    1. $UFW_MENU1"
     echo "                    2. $UFW_MENU2"
@@ -230,22 +244,23 @@ fi
 manage_resources() {
   while true; do
   clear
-  #echo "$SELECT_ACTION"
-  #echo "1. $RESOURCE_MENU1"
-  #echo "2. $RESOURCE_MENU2"
-  #echo "3. $RESOURCE_MENU3"
-  #echo "0. $BACK"
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+# Определение количества символов в строке терминала
+cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
-    echo "                       $SELECT_ACTION"
+    echoc "$SELECT_ACTION" $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
     echo "                    1. $RESOURCE_MENU1"
     echo "                    2. $RESOURCE_MENU2"
@@ -309,24 +324,26 @@ done
 
 change_language() {
     clear
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
-    echo ""
-    echo "========================================================="
-    echo ""
-    echo "                       $SELECT_LANG"
-    echo ""
-    echo "========================================================="
-    echo ""
-    echo "                    1. English"
-    echo "                    2. Русский"
-    #echo "$SELECT_LANG"
-    #echo "1. English"
-    #echo "2. Русский"
+    # Определение количества символов в строке терминала
+cols=$(tput cols)
 
+# Создание строки, состоящей из символов "="
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
+    echo ""
+    echo $line
+    echo ""
+    echoc "$SELECT_LANG" $width
+    echo ""
+    echo $line
+    echo ""
+    echoc "1. English" $width
+    echoc "2. Русский" $width
     tput cup $(tput lines) 0
     read -p "$ENTER_NUMBER" lang_choice
 
@@ -389,22 +406,23 @@ while true; do
       echo " "
       fi
   clear
-  #echo "$SELECT_ACTION"
-  #echo "1. $MYSQL_MANAGE_MENU1"
-  #echo "2. $MYSQL_MANAGE_MENU2"
-  #echo "3. $MYSQL_MANAGE_MENU3"
-  #echo "0. $BACK"
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+# Определение количества символов в строке терминала
+cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
-    echo "                       $SELECT_ACTION"
+    echoc "$SELECT_ACTION" $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
     echo "                    1. $MYSQL_MANAGE_MENU1"
     echo "                    2. $MYSQL_MANAGE_MENU2"
@@ -440,23 +458,23 @@ while true; do
   read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
   echo
   clear
-  #echo "$SELECT_ACTION"
-  #echo "1. $MYSQL_USERS_MANAGE_MENU1"
-  #echo "2. $MYSQL_USERS_MANAGE_MENU2"
-  #echo "3. $MYSQL_USERS_MANAGE_MENU3"
-  #echo "0. $BACK"
-  #echo " "
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+# Определение количества символов в строке терминала
+cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
-    echo "                       $SELECT_ACTION"
+    echoc "$SELECT_ACTION" $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
     echo "                    1. $MYSQL_USERS_MANAGE_MENU1"
     echo "                    2. $MYSQL_USERS_MANAGE_MENU2"
@@ -464,7 +482,7 @@ while true; do
     echo ""
     echo "                    0. $BACK"
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
   # Переменные для подключения к MySQL
   MYSQL_HOST="localhost"
@@ -603,24 +621,23 @@ while true; do
   read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
   echo
   clear
-  #echo "$SELECT_ACTION"
-  #echo "1. $MYSQL_DB_MANAGE_MENU1"
-  #echo "2. $MYSQL_DB_MANAGE_MENU2"
-  #echo "3. $MYSQL_DB_MANAGE_MENU3"
-  #echo "4. $MYSQL_DB_MANAGE_MENU4"
-  #echo "0. $BACK"
-  #echo " "
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+  # Определение количества символов в строке терминала
+cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
-    echo "                 $SELECT_ACTION"
+    echoc "$SELECT_ACTION" $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
     echo "              1. $MYSQL_DB_MANAGE_MENU1"
     echo "              2. $MYSQL_DB_MANAGE_MENU2"
@@ -629,7 +646,7 @@ while true; do
     echo ""
     echo "              0. $BACK"
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
   # Выполнение команды MySQL и получение списка баз данных
   DATABASES=$(mysql -h "localhost" -u "root" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" --silent)
@@ -1000,17 +1017,23 @@ if ! command -v exim4 &> /dev/null; then
       fi
     while true; do
     clear
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    # Определение количества символов в строке терминала
+    cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+    line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
-    echo "                 $SELECT_ACTION"
+    echoc "$SELECT_ACTION" $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
     echo "              1. $EMAIL_MANAGE_MENU1"
     echo "              2. $EMAIL_MANAGE_MENU2"
@@ -1094,17 +1117,23 @@ done
 vpn_manage () {
   while true; do
     clear
-    echo "        ___                      _        ___   ___ " 
-    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
-    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
-    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
-    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    # Определение количества символов в строке терминала
+    cols=$(tput cols)
+
+# Создание строки, состоящей из символов "="
+    line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
-    echo "                 $SELECT_ACTION"
+    echoc "$SELECT_ACTION" $width
     echo ""
-    echo "========================================================="
+    echo $line
     echo ""
     echo "              1. $VPN_MANAGE_MENU1"
     echo "              2. $VPN_MANAGE_MENU2"
@@ -1188,7 +1217,6 @@ cols=$(tput cols)
 line=$(printf "%${cols}s" | tr ' ' '=')
     width=$(tput cols)
     clear
-    #echoc "        ___                      _        ___   ___ "
     echoc "   ___                      _        ___   ___ " $width
     echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
     echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
@@ -1196,12 +1224,10 @@ line=$(printf "%${cols}s" | tr ' ' '=')
     echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
     echo ""
     echo $line
-    #echo "========================================================="
     echo ""
     echoc "$MAIN_MENU" $width
     echo ""
     echo $line
-    #echo "========================================================="
     echo ""
     echo "              1. $MAIN_MENU1"
     echo "              2. $MAIN_MENU2"
