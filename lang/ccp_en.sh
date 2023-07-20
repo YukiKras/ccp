@@ -104,3 +104,4 @@ export VPN_MANAGER_MENU1="Wireguard server settings (go to a third-party script)
 export VPN_MANAGER_MENU2="OpenVPN server settings (go to a third-party script)"
 export LIKE_REBOOT="To accept the changes, you need to reboot the host, do you want to reboot now (1 - Yes, 2 - No):"
 export ENTER_NEW_HOSTNAME="Enter new hostname:"
+export EMAIL_NOTE="You can change the host name in the ConsoleCP network settings"

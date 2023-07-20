@@ -76,7 +76,6 @@ line=$(printf "%${cols}s" | tr ' ' '=')
                     read gateway_ip
                     echo "$ENTER_DNS"
                     read dns_server
-
                     # Записываем настройки в файл /etc/network/interfaces
                     echo "auto $interface_name" | tee /etc/network/interfaces
                     echo "iface $interface_name inet static" | tee -a /etc/network/interfaces
@@ -144,7 +143,6 @@ manage_firewall() {
     else
     echo " "
     fi
-
 while true; do
     clear
 # Определение количества символов в строке терминала
@@ -1028,6 +1026,10 @@ if ! command -v exim4 &> /dev/null; then
     echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
     echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
     echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
+    echo ""
+    echo $line
+    echo ""
+    echo "$EMAIL_NOTE"
     echo ""
     echo $line
     echo ""
