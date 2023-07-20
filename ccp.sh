@@ -1,12 +1,14 @@
 #!/bin/bash
 # Функция для перезагрузки хоста
 reboot_host() {
+    clear
     echo "$REBOOT"
     reboot
 }
 
 # Функция для выключения хоста
 shutdown_host() {
+    clear
     echo "$SHUTDOWN"
     shutdown now
 }
@@ -23,11 +25,28 @@ show_network_settings() {
 configure_network() {
     while true; do
         clear
-        echo "$SELECT_ACTION"
-        echo "1. $NETWORK_MENU1"
-        echo "2. $NETWORK_MENU2"
-        echo "3. $NETWORK_MENU3"
-        echo "0. $EXIT"
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                       $SELECT_ACTION"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                    1. $NETWORK_MENU1"
+    echo "                    2. $NETWORK_MENU2"
+    echo "                    3. $NETWORK_MENU3"
+    echo ""
+    echo "                    0. $BACK"
+        #echo "$SELECT_ACTION"
+        #echo "1. $NETWORK_MENU1"
+        #echo "2. $NETWORK_MENU2"
+        #echo "3. $NETWORK_MENU3"
+        #echo "0. $EXIT"
 
         tput cup $(tput lines) 0
         read -p "$ENTER_NUMBER" choice
@@ -114,12 +133,30 @@ manage_firewall() {
 
 while true; do
     clear
-    echo "$SELECT_ACTION"
-    echo "1. $UFW_MENU1"
-    echo "2. $UFW_MENU2"
-    echo "3. $UFW_MENU3"
-    echo "4. $UFW_MENU4"
-    echo "0. $BACK"
+    #echo "$SELECT_ACTION"
+    #echo "1. $UFW_MENU1"
+    #echo "2. $UFW_MENU2"
+    #echo "3. $UFW_MENU3"
+    #echo "4. $UFW_MENU4"
+    #echo "0. $BACK"
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                       $SELECT_ACTION"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                    1. $UFW_MENU1"
+    echo "                    2. $UFW_MENU2"
+    echo "                    3. $UFW_MENU3"
+    echo "                    4. $UFW_MENU4"
+    echo ""
+    echo "                    0. $BACK"
     read -p "$ENTER_NUMBER" choice
     case $choice in
       1)
@@ -193,11 +230,28 @@ fi
 manage_resources() {
   while true; do
   clear
-  echo "$SELECT_ACTION"
-  echo "1. $RESOURCE_MENU1"
-  echo "2. $RESOURCE_MENU2"
-  echo "3. $RESOURCE_MENU3"
-  echo "0. $BACK"
+  #echo "$SELECT_ACTION"
+  #echo "1. $RESOURCE_MENU1"
+  #echo "2. $RESOURCE_MENU2"
+  #echo "3. $RESOURCE_MENU3"
+  #echo "0. $BACK"
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                       $SELECT_ACTION"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                    1. $RESOURCE_MENU1"
+    echo "                    2. $RESOURCE_MENU2"
+    echo "                    3. $RESOURCE_MENU3"
+    echo ""
+    echo "                    0. $BACK"
   tput cup $(tput lines) 0
   read -p "$ENTER_NUMBER" choice
   case $choice in
@@ -255,9 +309,23 @@ done
 
 change_language() {
     clear
-    echo "$SELECT_LANG"
-    echo "1. English"
-    echo "2. Русский"
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                       $SELECT_LANG"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                    1. English"
+    echo "                    2. Русский"
+    #echo "$SELECT_LANG"
+    #echo "1. English"
+    #echo "2. Русский"
 
     tput cup $(tput lines) 0
     read -p "$ENTER_NUMBER" lang_choice
@@ -321,11 +389,28 @@ while true; do
       echo " "
       fi
   clear
-  echo "$SELECT_ACTION"
-  echo "1. $MYSQL_MANAGE_MENU1"
-  echo "2. $MYSQL_MANAGE_MENU2"
-  echo "3. $MYSQL_MANAGE_MENU3"
-  echo "0. $BACK"
+  #echo "$SELECT_ACTION"
+  #echo "1. $MYSQL_MANAGE_MENU1"
+  #echo "2. $MYSQL_MANAGE_MENU2"
+  #echo "3. $MYSQL_MANAGE_MENU3"
+  #echo "0. $BACK"
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                       $SELECT_ACTION"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                    1. $MYSQL_MANAGE_MENU1"
+    echo "                    2. $MYSQL_MANAGE_MENU2"
+    echo "                    3. $MYSQL_MANAGE_MENU3"
+    echo ""
+    echo "                    0. $BACK"
   tput cup $(tput lines) 0
   read -p "$ENTER_NUMBER" choice
   case $choice in
@@ -355,12 +440,32 @@ while true; do
   read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
   echo
   clear
-  echo "$SELECT_ACTION"
-  echo "1. $MYSQL_USERS_MANAGE_MENU1"
-  echo "2. $MYSQL_USERS_MANAGE_MENU2"
-  echo "3. $MYSQL_USERS_MANAGE_MENU3"
-  echo "0. $BACK"
-  echo " "
+  #echo "$SELECT_ACTION"
+  #echo "1. $MYSQL_USERS_MANAGE_MENU1"
+  #echo "2. $MYSQL_USERS_MANAGE_MENU2"
+  #echo "3. $MYSQL_USERS_MANAGE_MENU3"
+  #echo "0. $BACK"
+  #echo " "
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                       $SELECT_ACTION"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                    1. $MYSQL_USERS_MANAGE_MENU1"
+    echo "                    2. $MYSQL_USERS_MANAGE_MENU2"
+    echo "                    3. $MYSQL_USERS_MANAGE_MENU3"
+    echo ""
+    echo "                    0. $BACK"
+    echo ""
+    echo "========================================================="
+    echo ""
   # Переменные для подключения к MySQL
   MYSQL_HOST="localhost"
   MYSQL_USER="root"
@@ -498,13 +603,34 @@ while true; do
   read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
   echo
   clear
-  echo "$SELECT_ACTION"
-  echo "1. $MYSQL_DB_MANAGE_MENU1"
-  echo "2. $MYSQL_DB_MANAGE_MENU2"
-  echo "3. $MYSQL_DB_MANAGE_MENU3"
-  echo "4. $MYSQL_DB_MANAGE_MENU4"
-  echo "0. $BACK"
-  echo " "
+  #echo "$SELECT_ACTION"
+  #echo "1. $MYSQL_DB_MANAGE_MENU1"
+  #echo "2. $MYSQL_DB_MANAGE_MENU2"
+  #echo "3. $MYSQL_DB_MANAGE_MENU3"
+  #echo "4. $MYSQL_DB_MANAGE_MENU4"
+  #echo "0. $BACK"
+  #echo " "
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                 $SELECT_ACTION"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "              1. $MYSQL_DB_MANAGE_MENU1"
+    echo "              2. $MYSQL_DB_MANAGE_MENU2"
+    echo "              3. $MYSQL_DB_MANAGE_MENU3"
+    echo "              4. $MYSQL_DB_MANAGE_MENU4"
+    echo ""
+    echo "              0. $BACK"
+    echo ""
+    echo "========================================================="
+    echo ""
   # Выполнение команды MySQL и получение списка баз данных
   DATABASES=$(mysql -h "localhost" -u "root" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" --silent)
   # Проверка успешности выполнения команды MySQL
@@ -872,18 +998,33 @@ if ! command -v exim &> /dev/null; then
       echo " "
       fi
 clear
-  echo "$SELECT_ACTION"
-  echo "1. $EMAIL_MANAGE_MENU1"
-  echo "2. $EMAIL_MANAGE_MENU2"
-  echo "3. $EMAIL_MANAGE_MENU3"
-  echo "4. $EMAIL_MANAGE_MENU4"
-  echo "5. $EMAIL_MANAGE_MENU5"
-  echo "6. $EMAIL_MANAGE_MENU6"
-  echo "7. $EMAIL_MANAGE_MENU7"
-  echo "8. $EMAIL_MANAGE_MENU8"
-  echo "9. $EMAIL_MANAGE_MENU9"
-  echo "10. $EMAIL_MANAGE_MENU10"
-  echo "0. $BACK"
+    echo "        ___                      _        ___   ___ " 
+    echo "       / __\___  _ __  ___  ___ | | ___  / __\ / _ |" 
+    echo "      / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/"
+    echo "     / /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ "
+    echo "     \____/\___/|_| |_|___/\___/|_|\___\____/\/     "
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "                 $SELECT_ACTION"
+    echo ""
+    echo "========================================================="
+    echo ""
+    echo "              1. $EMAIL_MANAGE_MENU1"
+    echo "              2. $EMAIL_MANAGE_MENU2"
+    echo ""
+    echo "              3. $EMAIL_MANAGE_MENU3"
+    echo "              4. $EMAIL_MANAGE_MENU4"
+    echo "              5. $EMAIL_MANAGE_MENU5"
+    echo ""
+    echo "              6. $EMAIL_MANAGE_MENU6"
+    echo "              7. $EMAIL_MANAGE_MENU7"
+    echo ""
+    echo "              8. $EMAIL_MANAGE_MENU8"
+    echo "              9. $EMAIL_MANAGE_MENU9"
+    echo "              10. $EMAIL_MANAGE_MENU10"
+    echo ""
+    echo "              0. $BACK"
   tput cup $(tput lines) 0
   read -p "$ENTER_NUMBER" choice
 
@@ -912,16 +1053,16 @@ case $command in
         delete_email_user $domain $email_user
         ;;
     5)
-        list_email_domains
+        clear
+        read -p "$ENTER_USERNAME " email_user
+        read -p "$ENTER_NEW_PASSWORD " password_email_user
+        change_email_users_password $email_user $password_email_user
         ;;
     6)
         list_email_users
         ;;
     7)
-        clear
-        read -p "$ENTER_DOMAIN " domain
-        read -p "$ENTER_DKIM_SELECTOR " dkim_selector 
-        configure_dkim $domain $dkim_selector
+        list_email_domains
         ;;
     8)
         clear
@@ -934,9 +1075,9 @@ case $command in
         ;;
     10)
         clear
-        read -p "$ENTER_USERNAME " email_user
-        read -p "$ENTER_NEW_PASSWORD " password_email_user
-        change_email_users_password $email_user $password_email_user
+        read -p "$ENTER_DOMAIN " domain
+        read -p "$ENTER_DKIM_SELECTOR " dkim_selector 
+        configure_dkim $domain $dkim_selector
         ;;
     0)
         break
@@ -945,14 +1086,6 @@ case $command in
         echo "$FAIL_CHOISE"
         ;;
 esac
-}
-
-center_text() {
-    local text="$1"
-    local width="$2"
-    local padding=$(( (width - ${#text}) / 2 ))
-    printf "%*s%s%*s
-" $padding "" "$text" $padding ""
 }
 
 # Основное меню
@@ -975,21 +1108,21 @@ load_language_resources
     echo ""
     echo "========================================================="
     echo ""
-    echo "                       $MAIN_MENU"
+    echo "                 $MAIN_MENU"
     echo ""
     echo "========================================================="
     echo ""
-    echo "                    1. $MAIN_MENU1"
-    echo "                    2. $MAIN_MENU2"
+    echo "              1. $MAIN_MENU1"
+    echo "              2. $MAIN_MENU2"
     echo ""
-    echo "                    3. $MAIN_MENU3"
-    echo "                    4. $MAIN_MENU4"
-    echo "                    5. $MAIN_MENU5"
-    echo "                    6. $MAIN_MENU6"
+    echo "              3. $MAIN_MENU3"
+    echo "              4. $MAIN_MENU4"
+    echo "              5. $MAIN_MENU5"
+    echo "              6. $MAIN_MENU6"
     echo ""
-    echo "                    7. $MAIN_MENU7"
-    echo "                    8. $MAIN_MENU8"
-    echo "                    0. $LEXIT"
+    echo "              7. $MAIN_MENU7"
+    echo "              8. $MAIN_MENU8"
+    echo "              0. $LEXIT"
 
     tput cup $(tput lines) 0
     read -p "$ENTER_NUMBER" choice
