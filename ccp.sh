@@ -1117,6 +1117,7 @@ if [ -f "/root/wireguard-install.sh" ]; then
   /root/wireguard-install.sh
 else
   wget -P /root https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
+  chmod +x /root/wireguard-install.sh
 fi
 #  if [ -f "/root/wireguard-install.sh" ]; then
 #     clear
@@ -1141,6 +1142,7 @@ fi
   /root/openvpn-install.sh
 else
   wget -P /root https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
+  chmod +x /root/openvpn-install.sh
 fi
   #if [ -f "/root/openvpn-install.sh" ]; then
   #    clear
