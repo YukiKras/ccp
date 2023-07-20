@@ -958,16 +958,34 @@ load_language_resources
   exit 1
   fi
     clear
-    echo "$MAIN_MENU"
-    echo "1. $MAIN_MENU1"
-    echo "2. $MAIN_MENU2"
-    echo "3. $MAIN_MENU3"
-    echo "4. $MAIN_MENU4"
-    echo "5. $MAIN_MENU5"
-    echo "6. $MAIN_MENU6"
-    echo "7. $MAIN_MENU7"
-    echo "8. $MAIN_MENU8"
-    echo "0. $LEXIT"
+    echo "  ______                                           __             ______   _______  "
+    echo " /      \                                         /  |           /      \ /       \ "
+    echo "/$$$$$$  |  ______   _______    _______   ______  $$ |  ______  /$$$$$$  |$$$$$$$  |"
+    echo "$$ |  $$/  /      \ /       \  /       | /      \ $$ | /      \ $$ |  $$/ $$ |__$$ |"
+    echo "$$ |      /$$$$$$  |$$$$$$$  |/$$$$$$$/ /$$$$$$  |$$ |/$$$$$$  |$$ |      $$    $$/ "
+    echo "$$ |   __ $$ |  $$ |$$ |  $$ |$$      \ $$ |  $$ |$$ |$$    $$ |$$ |   __ $$$$$$$/  "
+    echo "$$ \__/  |$$ \__$$ |$$ |  $$ | $$$$$$  |$$ \__$$ |$$ |$$$$$$$$/ $$ \__/  |$$ |      "
+    echo "$$    $$/ $$    $$/ $$ |  $$ |/     $$/ $$    $$/ $$ |$$       |$$    $$/ $$ |      "
+    echo " $$$$$$/   $$$$$$/  $$/   $$/ $$$$$$$/   $$$$$$/  $$/  $$$$$$$/  $$$$$$/  $$/       "
+    echo "                                                                                    "
+    echo "                                                                                    "
+    echo "                                                                                    "
+    echo "===================================================================================="
+    echo ""
+    echo "                                 $MAIN_MENU"
+    echo ""
+    echo "===================================================================================="
+    echo "                              1. $MAIN_MENU1"
+    echo "                              2. $MAIN_MENU2"
+    echo ""
+    echo "                              3. $MAIN_MENU3"
+    echo "                              4. $MAIN_MENU4"
+    echo "                              5. $MAIN_MENU5"
+    echo "                              6. $MAIN_MENU6"
+    echo ""
+    echo "                              7. $MAIN_MENU7"
+    echo "                              8. $MAIN_MENU8"
+    echo "                              0. $LEXIT"
 
     tput cup $(tput lines) 0
     read -p "$ENTER_NUMBER" choice
@@ -986,13 +1004,13 @@ load_language_resources
             manage_resources
             ;;
         5)
-            change_language
+            email_manage
             ;;
         6)
             mysql_manage
             ;;
         7)  
-            email_manage
+            change_language
             ;;
         8)
             mv /opt/ccp/update.sh /tmp/update.sh
