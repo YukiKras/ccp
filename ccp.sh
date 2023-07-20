@@ -30,6 +30,7 @@ cols=$(tput cols)
 
 # Создание строки, состоящей из символов "="
 line=$(printf "%${cols}s" | tr ' ' '=')
+external_ip=$(wget -qO- https://ipinfo.io/ip)
     width=$(tput cols)
     echoc "   ___                      _        ___   ___ " $width
     echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
@@ -997,23 +998,23 @@ email_manage () {
 #      else
 #      echo " "
 #      fi
-      if ! command -v postfix &> /dev/null; then
-      clear
-      echo "$NON_POSTFIX"
-      tput cup $(tput lines) 0
-      read -p "$LIKE_INSTALL" -n 1 apply_changes
-      if [[ $apply_changes == "1" ]]; then
-        apt install gnupng
-        apt install postfix
-        echo "$CHANGE_SUCCSESS"
-        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-      else
-        echo "$CANCELL"
-        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-      fi
-      else
-      echo " "
-      fi
+#      if ! command -v postfix &> /dev/null; then
+#      clear
+#      echo "$NON_POSTFIX"
+#      tput cup $(tput lines) 0
+#      read -p "$LIKE_INSTALL" -n 1 apply_changes
+#      if [[ $apply_changes == "1" ]]; then
+#        apt install gnupng
+#        apt install postfix
+#        echo "$CHANGE_SUCCSESS"
+#        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+#      else
+#        echo "$CANCELL"
+#        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+#      fi
+#      else
+#      echo " "
+#      fi
     clear
     # Определение количества символов в строке терминала
     cols=$(tput cols)
@@ -1055,7 +1056,7 @@ email_manage () {
   tput cup $(tput lines) 0
   read -p "$ENTER_NUMBER" choice
 
-case $command in
+case $choise in
     1)
         clear
         read -p "$ENTER_DOMAIN " domain
@@ -1112,7 +1113,7 @@ case $command in
     *)
         echo "$FAIL_CHOISE"
         ;;
-esac
+    esac
 done
 }
 
