@@ -20,7 +20,7 @@ The roadmap can be found [here](https://consolecp.kiselev.ru.net/Roadmap)
 6. Email server management (exim, postfix)
 
 <details>
-  <summary>## Screenshots</summary>
+  <summary>Screenshots</summary>
 
 ![Manage menu Mysql](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/mysql_en.png)
 
@@ -56,7 +56,6 @@ bash ./installccp.sh
 
 ## Links
 
-- [Wiki](https://consolecp.kiselev.ru.net/)
 - [Telegram EN](https://t.me/ccplen)
 - [Vkontakte](https://vk.com/consolecp)
 - [Discord](https://discord.gg/Nc6qDeSb9q)
