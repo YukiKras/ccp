@@ -980,22 +980,23 @@ password_email_user=$2
 }
 
 email_manage () {
-if ! command -v exim4 &> /dev/null; then
-      clear
-      echo "$NON_EXIM"
-      tput cup $(tput lines) 0
-      read -p "$LIKE_INSTALL" -n 1 apply_changes
-      if [[ $apply_changes == "1" ]]; then
-        apt install gnupng
-        apt install exim4-daemon-heavy
-        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-      else
-        echo "$CANCELL"
-        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-      fi
-      else
-      echo " "
-      fi
+  while true; do
+#if ! command -v exim4 &> /dev/null; then
+#      clear
+#      echo "$NON_EXIM"
+#      tput cup $(tput lines) 0
+#      read -p "$LIKE_INSTALL" -n 1 apply_changes
+#      if [[ $apply_changes == "1" ]]; then
+#        apt install gnupng
+#        apt install exim4-daemon-heavy
+#        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+#      else
+#        echo "$CANCELL"
+#        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+#      fi
+#      else
+#      echo " "
+#      fi
       if ! command -v postfix &> /dev/null; then
       clear
       echo "$NON_POSTFIX"
@@ -1013,7 +1014,6 @@ if ! command -v exim4 &> /dev/null; then
       else
       echo " "
       fi
-    while true; do
     clear
     # Определение количества символов в строке терминала
     cols=$(tput cols)

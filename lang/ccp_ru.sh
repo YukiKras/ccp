@@ -104,4 +104,4 @@ export VPN_MANAGE_MENU1="Настройки Wireguard сервера (перей
 export VPN_MANAGE_MENU2="Настройки OpenVPN сервера (перейти в сторонний скрипт)"
 export LIKE_REBOOT="Чтобы принять изменения нужно перезагрузить хост, желаете ли перезагрузить сейчас (1 - Да, 2 - Нет):"
 export ENTER_NEW_HOSTNAME="Введите новое имя хоста:"
-export EMAIL_NOTE="Поменять имя хоста можно в настройках сети ConsoleCP"
+export EMAIL_NOTE="Поменять имя хоста можно в настройках сети ConsoleCP. Также перед первой настройкой почты убедитесь что у вас установлены exim и postfix."
