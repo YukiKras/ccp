@@ -12,27 +12,4 @@ rm -rf /opt/ccp/wiki
 # Установка прав доступа
 chmod -R 755 /opt/ccp
 
-# Запрос языка установки
-echo "Select langluage:"
-    echo "1. English"
-    echo "2. Русский"
-
-    tput cup $(tput lines) 0
-    read -p "Select: " lang
-
-    case $lang in
-        1)
-            lang_code="en"
-            ;;
-        2)
-            lang_code="ru"
-            ;;
-        *)
-            echo "Fail choise"
-            return
-            ;;
-    esac
-
-echo $lang_code > /opt/ccp/lang.config  # Запись выбранного языка в файл
-
 echo "The update has been completed successfully."

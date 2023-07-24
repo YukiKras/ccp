@@ -19,8 +19,9 @@ A list of third-party scripts used can be found [here](https://github.com/Nagiba
 3. Host resource management
 4. Firewall (UFW) management
 5. Mysql management
-6. Email server management (exim, postfix)
-7. VPN Management ([Wireguard](https://github.com/angristan/wireguard-install) and [OpenVPN](https://github.com/angristan/openvpn-install))
+6. Web sites management
+7. VPN management ([Wireguard](https://github.com/angristan/wireguard-install) and [OpenVPN](https://github.com/angristan/openvpn-install))
+8. PHP management
 
 <details>
   <summary>Screenshots</summary>

@@ -3,12 +3,12 @@
 ## What will be done
 
 + Updated wiki
-+ Managing web servers and websites
-+ PHP Management
 + DNS Management
++ Installing Wordpress
++ Configuring custom nginx and apache web templates
 + Control of the following scheme (instead of Dovecot will be exim):
 
-![Mail Implementation](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/mail_roadmap.jpg )
+![Mail Implementation](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/mail_roadmap.jpg)
 
 ## What will be added later
 

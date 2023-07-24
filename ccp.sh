@@ -44,12 +44,12 @@ external_ip=$(wget -qO- https://ipinfo.io/ip)
     echo ""
     echo $line
     echo ""
-    echo "                    1. $NETWORK_MENU1 $external_ip"
-    echo "                    2. $NETWORK_MENU2"
-    echo "                    3. $NETWORK_MENU3"
-    echo "                    4. $NETWORK_MENU4"
+    echo "         1. $NETWORK_MENU1 $external_ip"
+    echo "         2. $NETWORK_MENU2"
+    echo "         3. $NETWORK_MENU3"
+    echo "         4. $NETWORK_MENU4"
     echo ""
-    echo "                    0. $BACK"
+    echo "         0. $BACK"
         tput cup $(tput lines) 0
         read -p "$ENTER_NUMBER" choice
 
@@ -1145,11 +1145,10 @@ vpn_manage () {
   read -p "$ENTER_NUMBER" choice
   case $choice in
   1)
-if [ -f "/root/wireguard-install.sh" ]; then
   clear
+if [ -f "/root/wireguard-install.sh" ]; then
   /root/wireguard-install.sh
 else
-  clear
       echo "$NON_WIREGUARD"
       tput cup $(tput lines) 0
       read -p "$LIKE_INSTALL" -n 1 apply_changes
@@ -1165,18 +1164,16 @@ else
 fi
   ;;
   2)
-  if [ -f "/root/openvpn-install.sh" ]; then
   clear
+  if [ -f "/root/openvpn-install.sh" ]; then
   /root/openvpn-install.sh
 else
-  clear
       echo "$NON_OPENVPN"
       tput cup $(tput lines) 0
       read -p "$LIKE_INSTALL" -n 1 apply_changes
   if [ "$apply_changes" == "1" ]; then
     wget -P /root https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
     chmod +x /root/openvpn-install.sh
-    echo "$CHANGE_SUCCSESS"
     read -n 1 -s -r -p "$ANYKEY_CONTINUE"
   else
     echo "$CANCELL"
@@ -1201,6 +1198,598 @@ echoc() {
     local padding=$(( (width - ${#text}) / 2 ))
     printf "%*s%s%*s
 " $padding "" "$text" $padding ""
+}
+
+ask_question() {
+    local question=$1
+    local variable=$2
+    read -p "$question" answer
+    case "$answer" in
+        "0"|"1")
+            eval "$variable=$answer"
+            ;;
+        *)
+            echo "$FAIL_CHOISE"
+            ask_question "$question" "$variable"
+            ;;
+    esac
+}
+
+web_manage () {
+  while true; do
+  if ! command -v nginx &> /dev/null; then
+      clear
+      echo "$NON_NGINX"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        apt install nginx
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+      echo " "
+      fi
+  if ! command -v apache2 &> /dev/null; then
+      clear
+      echo "$NON_APACHE"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        apt install apache2
+        a2enmod proxy rewrite ssl headers proxy_http
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+      echo " "
+      fi
+  if ! command -v php8.1 &> /dev/null; then
+      clear
+      echo "$NON_PHP"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        apt install php8.1 php8.1-cgi php8.1-cli php8.1-fpm
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+      echo " "
+      fi
+  if ! command -v certbot &> /dev/null; then
+      clear
+      echo "$NON_CERTBOT"
+      tput cup $(tput lines) 0
+      read -p "$LIKE_INSTALL" -n 1 apply_changes
+      if [[ $apply_changes == "1" ]]; then
+        apt install certbot
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        echo "$CANCELL"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+      echo " "
+      fi
+    clear
+    cols=$(tput cols)
+    line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
+    echo ""
+#    echo $line
+#    echo ""
+#    echo "$WEB_MANAGE_NOTE" написать про скрипт по проверке сертификатов letsencrypt 
+#    echo ""
+    echo $line
+    echo ""
+    echoc "$SELECT_ACTION" $width
+    echo ""
+    echo $line
+    echo ""
+    echo "              1. $WEB_MANAGE_MENU1"
+    echo "              2. $WEB_MANAGE_MENU2"
+    echo ""
+    echo "              3. $WEB_MANAGE_MENU3"
+    echo "              4. $WEB_MANAGE_MENU4"
+    echo ""
+    echo "              5. $WEB_MANAGE_MENU5"
+    echo "              6. $WEB_MANAGE_MENU6"
+    echo "              7. $WEB_MANAGE_MENU7"
+    echo "              0. $BACK"
+    echo ""
+    echo $line
+    echo ""
+    WEB_SITE_LISTS=$(ls -1 /etc/apache2/sites-enabled/)
+    echo "$WEB_SITE_LIST"
+    echo $WEB_SITE_LISTS
+  tput cup $(tput lines) 0
+  read -p "$ENTER_NUMBER" choice
+  case $choice in
+  1)
+  clear
+  tput cup $(tput lines) 0
+  read -p "$ENTER_DOMAIN " domain
+  ask_question "$LIKE_SSL " question_1
+if [[ "$question_1" == "1" ]]; then
+    # Задаем второй вопрос только если пользователь ответил положительно на первый
+    ask_question "$LIKE_LTSENCRYPT " question_2
+
+    if [[ "$question_2" == "1" ]]; then
+        # Задаем третий вопрос только если пользователь ответил положительно на второй
+        ask_question "$ENTER_SSL_PATH " question_3
+
+        # Задаем четвертый вопрос только если пользователь ответил положительно на второй
+        ask_question "$ENTER_SSL_KEY_PATH " question_4
+    fi
+fi
+  web_site_create $domain $question_1 $question_2 $question_3 $question_4
+  ;;
+  2)
+  clear
+  tput cup $(tput lines) 0
+  read -p "$ENTER_DOMAIN " domain
+  read -p "$LIKE_WEB_DIR_DELETE " -n 1 apply_changes
+  web_site_delete $domain $apply_changes
+  ;;
+  3)
+  clear
+  tput cup $(tput lines) 0
+  read -p "$ENTER_DOMAIN " domain
+  web_site_enable $domain
+  ;;
+  4)
+  clear
+  tput cup $(tput lines) 0
+  read -p "$ENTER_DOMAIN " domain
+  web_site_disable $domain
+  ;;
+  5)
+  clear
+  systemctl restart nginx apache2 mysql php8.1-cgi php8.1-fpm
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  ;;
+  6)
+  clear
+  tput cup $(tput lines) 0
+  read -p "$ENTER_DOMAIN " domain
+  certbot --nginx -d $domain
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  ;;
+  7)
+  php_manage
+  ;;
+  0)
+  break
+  ;;
+  *)
+  echo "$FAIL_CHOISE"
+  ;;
+  esac
+  done
+}
+
+web_site_create () {
+  domain=$1
+  enable_ssl=$2
+  letsencrypt_enable=$3
+  ssl_path=$4
+  ssl_key_path=$5
+  mkdir /var/www/html/$domain
+  chown -R www-data:www-data /var/www/html/$domain
+  chmod -R 755 /var/www/html/$domain
+if [[ "$enable_ssl" -eq 0 && "$letsencrypt_enable" -eq 0 ]]; then
+cat << EOF > /etc/apache2/sites-available/$domain.conf
+<VirtualHost localhost:8089>
+
+    ServerName $domain
+    ServerAdmin admin@$domain
+    DocumentRoot /var/www/html/$domain
+    ScriptAlias /cgi-bin/ /var/www/cgi-bin/$domain
+    CustomLog /var/log/apache2/domains/$domain.bytes bytes
+    CustomLog /var/log/apache2/domains/$domain.log combined
+    ErrorLog /var/log/apache2/domains/$domain.error.log
+
+    <Directory /var/www/html/$domain/>
+        AllowOverride All
+        Options +Includes -Indexes +ExecCGI
+    </Directory>
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php8.1-fpm-$domain.sock|fcgi://localhost"
+    </FilesMatch>
+    SetEnvIf Authorization .+ HTTP_AUTHORIZATION=\$0
+</VirtualHost>
+EOF
+cat << EOF > /etc/nginx/sites-available/$domain.conf
+server {
+        listen      80;
+        server_name $domain;
+        error_log   /var/log/apache2/domains/$domain.error.log error;
+
+        location ~ /\.(?!well-known\/|file) {
+                deny all;
+                return 404;
+        }
+
+        location / {
+                proxy_pass http://localhost:8089;
+
+                location ~* ^.+\.(css|htm|html|js|json|xml|apng|avif|bmp|cur|gif|ico|jfif|jpg|jpeg|pjp|pjpeg|png|svg|tif|tiff|webp|aac|caf|flac|m4a|midi|mp3|ogg|opus|wav|3gp|av1|avi|m4v|mkv|mov|mpg|mpeg|mp4|mp4v|webm|otf|ttf|woff|woff2|doc|docx|odf|odp|ods|odt|pdf|ppt|pptx|rtf|txt|xls|xlsx|7z|bz2|gz|rar|tar|tgz|zip|apk|appx|bin|dmg|exe|img|iso|jar|msi)$ {
+                        try_files  \$uri @fallback;
+
+                        root       /var/www/html/$domain;
+                        access_log /var/log/apache2/domains/$domain.log combined;
+                        access_log /var/log/apache2/domains/$domain.bytes bytes;
+
+                        expires    max;
+                }
+        }
+
+        location @fallback {
+                proxy_pass http://localhost:8089;
+        }
+}
+EOF
+ln -s /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/
+a2ensite $domain.conf
+systemctl restart nginx apache2
+echo $WEB_SITE_CREATED
+read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 0 ]]; then
+cat << EOF > /etc/apache2/sites-available/$domain.conf
+<VirtualHost localhost:8443>
+
+    ServerName $domain
+
+    ServerName $domain
+    ServerAdmin admin@$domain
+    DocumentRoot /var/www/html/$domain
+    ScriptAlias /cgi-bin/ /var/www/cgi-bin/$domain
+    CustomLog /var/log/apache2/domains/$domain.bytes bytes
+    CustomLog /var/log/apache2/domains/$domain.log combined
+    ErrorLog /var/log/apache2/domains/$domain.error.log
+    <Directory /var/www/html/$domain>
+        AllowOverride All
+        SSLRequireSSL
+        Options +Includes -Indexes +ExecCGI
+        </Directory>
+    SSLEngine on
+    SSLVerifyClient none
+    SSLCertificateFile $ssl_path
+    SSLCertificateKeyFile $ssl_key_path
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php8.1-fpm-$domain.sock|fcgi://localhost"
+    </FilesMatch>
+    SetEnvIf Authorization .+ HTTP_AUTHORIZATION=\$0
+</VirtualHost>
+EOF
+cat << EOF > /etc/nginx/sites-available/$domain.conf
+server {
+        listen      80;
+        server_name $domain;
+        error_log   /var/log/apache2/domains/$domain.error.log error;
+
+        return 301 https://\$host\$request_uri;
+        }
+server {
+        listen      443 ssl;
+        server_name $domain;
+        error_log   /var/log/apache2/domains/$domain.error.log error;
+
+        ssl_certificate     $ssl_path;
+        ssl_certificate_key $ssl_key_path;
+        ssl_stapling        on;
+        ssl_stapling_verify on;
+
+        # TLS 1.3 0-RTT anti-replay
+        if (\$anti_replay = 307) { return 307 https://\$host\$request_uri; }
+        if (\$anti_replay = 425) { return 425; }
+
+        add_header Strict-Transport-Security "max-age=31536000;" always;
+
+        location ~ /\.(?!well-known\/|file) {
+                deny all;
+                return 404;
+        }
+        
+        location / {
+                proxy_pass https://localhost:8443;
+
+                location ~* ^.+\.(css|htm|html|js|json|xml|apng|avif|bmp|cur|gif|ico|jfif|jpg|jpeg|pjp|pjpeg|png|svg|tif|tiff|webp|aac|caf|flac|m4a|midi|mp3|ogg|opus|wav|3gp|av1|avi|m4v|mkv|mov|mpg|mpeg|mp4|mp4v|webm|otf|ttf|woff|woff2|doc|docx|odf|odp|ods|odt|pdf|ppt|pptx|rtf|txt|xls|xlsx|7z|bz2|gz|rar|tar|tgz|zip|apk|appx|bin|dmg|exe|img|iso|jar|msi)$ {
+                        try_files  \$uri @fallback;
+
+                        root       /var/www/html/$domain;
+                        access_log /var/log/apache2/domains/$domain.log combined;
+                        access_log /var/log/apache2/domains/$domain.bytes bytes;
+
+                        expires    max;
+                }
+        }
+
+        location @fallback {
+                proxy_pass https://localhost:8443;
+        }
+
+        proxy_hide_header Upgrade;
+}
+EOF
+ln -s /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/
+a2ensite $domain.conf
+systemctl restart nginx apache2
+echo $WEB_SITE_CREATED
+read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 1 ]]; then
+cat << EOF > /etc/apache2/sites-available/$domain.conf
+<VirtualHost localhost:8443>
+
+    ServerName $domain
+
+    ServerName $domain
+    ServerAdmin admin@$domain
+    DocumentRoot /var/www/html/$domain
+    ScriptAlias /cgi-bin/ /var/www/cgi-bin/$domain
+    CustomLog /var/log/apache2/domains/$domain.bytes bytes
+    CustomLog /var/log/apache2/domains/$domain.log combined
+    ErrorLog /var/log/apache2/domains/$domain.error.log
+    <Directory /var/www/html/$domain>
+        AllowOverride All
+        SSLRequireSSL
+        Options +Includes -Indexes +ExecCGI
+        </Directory>
+    SSLEngine on
+    SSLVerifyClient none
+    SSLCertificateFile /etc/letsencrypt/live/$domain/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/$domain/privkey.pem
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php8.1-fpm-$domain.sock|fcgi://localhost"
+    </FilesMatch>
+    SetEnvIf Authorization .+ HTTP_AUTHORIZATION=\$0
+</VirtualHost>
+EOF
+cat << EOF > /etc/nginx/sites-available/$domain.conf
+server {
+        listen      80;
+        server_name $domain;
+        error_log   /var/log/apache2/domains/$domain.error.log error;
+
+        return 301 https://\$host\$request_uri;
+        }
+server {
+        listen      443 ssl;
+        server_name $domain;
+        error_log   /var/log/apache2/domains/$domain.error.log error;
+
+        ssl_certificate     /etc/letsencrypt/live/$domain/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem;
+        ssl_stapling        on;
+        ssl_stapling_verify on;
+
+        # TLS 1.3 0-RTT anti-replay
+        if (\$anti_replay = 307) { return 307 https://\$host\$request_uri; }
+        if (\$anti_replay = 425) { return 425; }
+
+        add_header Strict-Transport-Security "max-age=31536000;" always;
+
+        location ~ /\.(?!well-known\/|file) {
+                deny all;
+                return 404;
+        }
+        
+        location / {
+                proxy_pass https://localhost:8443;
+
+                location ~* ^.+\.(css|htm|html|js|json|xml|apng|avif|bmp|cur|gif|ico|jfif|jpg|jpeg|pjp|pjpeg|png|svg|tif|tiff|webp|aac|caf|flac|m4a|midi|mp3|ogg|opus|wav|3gp|av1|avi|m4v|mkv|mov|mpg|mpeg|mp4|mp4v|webm|otf|ttf|woff|woff2|doc|docx|odf|odp|ods|odt|pdf|ppt|pptx|rtf|txt|xls|xlsx|7z|bz2|gz|rar|tar|tgz|zip|apk|appx|bin|dmg|exe|img|iso|jar|msi)$ {
+                        try_files  \$uri @fallback;
+
+                        root       /var/www/html/$domain;
+                        access_log /var/log/apache2/domains/$domain.log combined;
+                        access_log /var/log/apache2/domains/$domain.bytes bytes;
+
+                        expires    max;
+                }
+        }
+
+        location @fallback {
+                proxy_pass https://localhost:8443;
+        }
+
+        proxy_hide_header Upgrade;
+}
+EOF
+ln -s /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/
+a2ensite $domain.conf
+certbot certonly --manual -d $domain
+systemctl restart nginx apache2
+echo $WEB_SITE_CREATED
+read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    else
+        tput cup $(tput lines) 0
+        echo "$FAIL_CHOISE"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    fi
+
+}
+
+web_site_delete () {
+  domain=$1
+  dir_delete=$2
+  if [[ $dir_delete == "1" ]]; then
+        rm /etc/apache2/sites-enabled/$domain.conf
+        rm /etc/nginx/sites-enabled/$domain.conf
+        systemctl restart nginx apache2
+        rm -rf /var/www/html/$domain
+        echo $WEB_SITE_DELETED
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      else
+        rm /etc/apache2/sites-enabled/$domain.conf
+        rm /etc/nginx/sites-enabled/$domain.conf
+        systemctl restart nginx apache2
+        echo $WEB_SITE_DELETED
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+      else
+      tput cup $(tput lines) 0
+      echo "$FAIL_CHOISE"
+      read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+      fi
+}
+
+web_site_enable () {
+  domain=$1
+  a2ensite $domain.conf
+  ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
+  systemctl restart nginx apache2
+echo $WEB_SITE_ENABLED
+read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+}
+
+web_site_disable () {
+  domain=$1
+  a2dissite $domain.conf
+  rm /etc/nginx/sites-enabled/$domain.conf
+  systemctl restart nginx apache2
+  echo $WEB_SITE_DISABLED
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+}
+
+php_manage () {
+  while true; do
+  clear
+  cols=$(tput cols)
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    clear
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
+    echo ""
+    echo $line
+    echo ""
+    echoc "$SELECT_ACTION" $width
+    echo ""
+    echo $line
+    echo ""
+    echo "              1. $PHP_MANAGE_MENU1"
+    echo "              2. $PHP_MANAGE_MENU2"
+    echo "              3. $PHP_MANAGE_MENU3"
+    echo "              4. $PHP_MANAGE_MENU4"
+    echo "              5. $PHP_MANAGE_MENU5"
+    echo "              0. $BACK"
+    echo $line
+    echo ""
+    php_versions=$(ls /usr/bin/php*)
+
+if [ -n "$php_versions" ]; then
+    echo "$INSTALLED_PHP "
+    for version in $php_versions; do
+        version_number=$(php -r "echo PHP_VERSION;" -- "$version" 2>/dev/null)
+        if [ -n "$version_number" ]; then
+            echo "$version_number"
+        fi
+    done
+else
+    echo "$UNKNOW_ERROR"
+fi
+    tput cup $(tput lines) 0
+    read -p "$ENTER_NUMBER" choice
+
+    case $choice in
+        1)
+            clear
+            read -p "$ENTER_PHP_VERSION " version
+            install_php_version $version
+            ;;
+        2)
+            clear
+            read -p "$ENTER_PHP_VERSION " version
+            delete_php_version $version
+            ;;
+        3)
+            clear
+            wget -P /root https://gist.githubusercontent.com/rangerz/271504c282ea254779ddb730605fd662/raw/28193a7d1595939c0d10ad1822fa4b95d0e915b0/install_ioncube.sh
+            /root/install_ioncube.sh
+            read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+            ;;
+        4)
+            clear
+            read -p "$ENTER_PHP_VERSION " version
+            read -p "$ENTER_PHP_PLUGIN " plugin
+            install_php_plugin $version $plugin
+            ;;
+        5)
+            clear
+            read -p "$ENTER_DOMAIN " domain
+            read -p "$ENTER_PHP_VERSION " php_version
+            change_web_site_php $domain $php_version
+            ;;
+        0)
+            break
+            ;;
+        *)
+          echo "$FAIL_CHOISE"
+          ;;
+    esac
+done
+}
+
+install_php_version () {
+  version=$1
+  apt install php$version php$version-cgi php$version-fpm php$version-cli
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+}
+
+delete_php_version () {
+  version=$1
+  apt remove php$version php$version-*
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+}
+
+install_php_plugin () {
+  version=$1
+  plugin=$2
+  apt install php$version-$plugin
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+}
+
+change_web_site_php () {
+    domain=$1
+    php_version=$2
+
+    # Изменение конфигурационного файла для Apache
+    local apache_config_file="/etc/apache2/sites-available/$domain.conf"
+    if [ -f "$apache_config_file" ]; then
+        sed -i "s/php[0-9.]+/php${php_version}/g" "$apache_config_file"
+        echo "$CHANGE_SUCCSESS"
+    else
+        echo "$MISSING_DOMAIN"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    fi
+    # Изменение конфигурационного файла для Nginx
+    local nginx_config_file="/etc/nginx/sites-available/$domain"
+    if [ -f "$nginx_config_file" ]; then
+        sed -i "s/fastcgi_pass unix:/run/php/php[0-9.]+/fastcgi_pass unix:/run/php/php${php_version}-fpm.sock/g" "$nginx_config_file"
+        echo "$CHANGE_SUCCSESS"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    else
+        echo "$MISSING_DOMAIN"
+        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    fi
 }
 
 # Основное меню
@@ -1228,6 +1817,10 @@ line=$(printf "%${cols}s" | tr ' ' '=')
     echo ""
     echo $line
     echo ""
+    echo "$MAIN_MENU_NOTE"
+    echo ""
+    echo $line
+    echo ""
     echoc "$MAIN_MENU" $width
     echo ""
     echo $line
@@ -1237,12 +1830,13 @@ line=$(printf "%${cols}s" | tr ' ' '=')
     echo ""
     echo "              3. $MAIN_MENU3"
     echo "              4. $MAIN_MENU4"
-    echo "              5. $MAIN_MENU5"
+#    echo "              5. $MAIN_MENU5"
     echo "              6. $MAIN_MENU6"
     echo "              7. $MAIN_MENU7"
-    echo ""
     echo "              8. $MAIN_MENU8"
+    echo ""
     echo "              9. $MAIN_MENU9"
+    echo "              10. $MAIN_MENU10"
     echo "              0. $LEXIT"
 
     tput cup $(tput lines) 0
@@ -1261,9 +1855,9 @@ line=$(printf "%${cols}s" | tr ' ' '=')
         4)
             manage_resources
             ;;
-        5)
-            email_manage
-            ;;
+#        5)
+#            email_manage
+#            ;;
         6)
             mysql_manage
             ;;
@@ -1271,12 +1865,17 @@ line=$(printf "%${cols}s" | tr ' ' '=')
             vpn_manage
             ;;
         8)
-            mv /opt/ccp/update.sh /tmp/update.sh
-            clear
-            /tmp/update.sh
+            web_manage
             ;;
         9)  
             change_language
+            ;;
+        10)
+            cp /opt/ccp/lang.config /tmp/lang.config
+            mv /opt/ccp/update.sh /tmp/update.sh
+            clear
+            /tmp/update.sh
+            exit 0
             ;;
         0)
             clear
