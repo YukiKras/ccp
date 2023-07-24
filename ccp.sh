@@ -1640,7 +1640,6 @@ web_site_delete () {
         systemctl restart nginx apache2
         echo $WEB_SITE_DELETED
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-      fi
       else
       tput cup $(tput lines) 0
       echo "$FAIL_CHOISE"
