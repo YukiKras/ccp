@@ -1239,6 +1239,10 @@ web_manage () {
       read -p "$LIKE_INSTALL" -n 1 apply_changes
       if [[ $apply_changes == "1" ]]; then
         apt install apache2
+        mkdir /var/log/apache2/domains/
+        chown -R www-data:www-data /var/log/apache2/domains/
+        chmod -R 755 /var/log/apache2/domains/
+        chmod -R 755 /var/log/apache2/domains/*
         a2enmod proxy rewrite ssl headers proxy_http
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
@@ -1254,6 +1258,10 @@ web_manage () {
       tput cup $(tput lines) 0
       read -p "$LIKE_INSTALL" -n 1 apply_changes
       if [[ $apply_changes == "1" ]]; then
+        apt install lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
+        echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
+        curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
+        apt update
         apt install php8.1 php8.1-cgi php8.1-cli php8.1-fpm
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
@@ -1442,7 +1450,7 @@ server {
         }
 }
 EOF
-ln -s /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
 a2ensite $domain.conf
 systemctl restart nginx apache2
 echo $WEB_SITE_CREATED
@@ -1526,7 +1534,7 @@ server {
         proxy_hide_header Upgrade;
 }
 EOF
-ln -s /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
 a2ensite $domain.conf
 systemctl restart nginx apache2
 echo $WEB_SITE_CREATED
@@ -1610,7 +1618,7 @@ server {
         proxy_hide_header Upgrade;
 }
 EOF
-ln -s /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
 a2ensite $domain.conf
 certbot certonly --manual -d $domain
 systemctl restart nginx apache2

@@ -60,4 +60,4 @@ echo "Select langluage:"
 
 echo $lang_code > /opt/ccp/lang.config  # Запись выбранного языка в файл
 
-echo "The installation has been completed successfully. Use ccp to bring up the control panel."
+echo "The installation has been completed successfully. Use ccp to bring up the control panel. If it doesn't work, try restarting the server."
