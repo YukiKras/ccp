@@ -1258,7 +1258,7 @@ web_manage () {
       tput cup $(tput lines) 0
       read -p "$LIKE_INSTALL" -n 1 apply_changes
       if [[ $apply_changes == "1" ]]; then
-        apt install lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
+        apt install lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 curl
         echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
         curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
         apt update
@@ -1397,7 +1397,7 @@ web_site_create () {
   mkdir /var/www/html/$domain
   chown -R www-data:www-data /var/www/html/$domain
   chmod -R 755 /var/www/html/$domain
-if [[ "$enable_ssl" -eq 0 && "$letsencrypt_enable" -eq 0 ]]; then
+if [[ "$enable_ssl" -eq 2 && "$letsencrypt_enable" -eq 2 ]]; then
 cat << EOF > /etc/apache2/sites-available/$domain.conf
 <VirtualHost localhost:8089>
 
@@ -1405,7 +1405,7 @@ cat << EOF > /etc/apache2/sites-available/$domain.conf
     ServerAdmin admin@$domain
     DocumentRoot /var/www/html/$domain
     ScriptAlias /cgi-bin/ /var/www/cgi-bin/$domain
-    CustomLog /var/log/apache2/domains/$domain.bytes bytes
+    #CustomLog /var/log/apache2/domains/$domain.bytes bytes
     CustomLog /var/log/apache2/domains/$domain.log combined
     ErrorLog /var/log/apache2/domains/$domain.error.log
 
@@ -1439,7 +1439,7 @@ server {
 
                         root       /var/www/html/$domain;
                         access_log /var/log/apache2/domains/$domain.log combined;
-                        access_log /var/log/apache2/domains/$domain.bytes bytes;
+                        #access_log /var/log/apache2/domains/$domain.bytes bytes;
 
                         expires    max;
                 }
@@ -1455,7 +1455,7 @@ a2ensite $domain.conf
 systemctl restart nginx apache2
 echo $WEB_SITE_CREATED
 read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-    elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 0 ]]; then
+    elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 2 ]]; then
 cat << EOF > /etc/apache2/sites-available/$domain.conf
 <VirtualHost localhost:8443>
 
@@ -1465,7 +1465,7 @@ cat << EOF > /etc/apache2/sites-available/$domain.conf
     ServerAdmin admin@$domain
     DocumentRoot /var/www/html/$domain
     ScriptAlias /cgi-bin/ /var/www/cgi-bin/$domain
-    CustomLog /var/log/apache2/domains/$domain.bytes bytes
+    #CustomLog /var/log/apache2/domains/$domain.bytes bytes
     CustomLog /var/log/apache2/domains/$domain.log combined
     ErrorLog /var/log/apache2/domains/$domain.error.log
     <Directory /var/www/html/$domain>
@@ -1521,7 +1521,7 @@ server {
 
                         root       /var/www/html/$domain;
                         access_log /var/log/apache2/domains/$domain.log combined;
-                        access_log /var/log/apache2/domains/$domain.bytes bytes;
+                        #access_log /var/log/apache2/domains/$domain.bytes bytes;
 
                         expires    max;
                 }
@@ -1549,7 +1549,7 @@ cat << EOF > /etc/apache2/sites-available/$domain.conf
     ServerAdmin admin@$domain
     DocumentRoot /var/www/html/$domain
     ScriptAlias /cgi-bin/ /var/www/cgi-bin/$domain
-    CustomLog /var/log/apache2/domains/$domain.bytes bytes
+    #CustomLog /var/log/apache2/domains/$domain.bytes bytes
     CustomLog /var/log/apache2/domains/$domain.log combined
     ErrorLog /var/log/apache2/domains/$domain.error.log
     <Directory /var/www/html/$domain>
@@ -1605,7 +1605,7 @@ server {
 
                         root       /var/www/html/$domain;
                         access_log /var/log/apache2/domains/$domain.log combined;
-                        access_log /var/log/apache2/domains/$domain.bytes bytes;
+                        #access_log /var/log/apache2/domains/$domain.bytes bytes;
 
                         expires    max;
                 }
