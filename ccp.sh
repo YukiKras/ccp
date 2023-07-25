@@ -1397,7 +1397,7 @@ web_site_create () {
   mkdir /var/www/html/$domain
   chown -R www-data:www-data /var/www/html/$domain
   chmod -R 755 /var/www/html/$domain
-if [[ "$enable_ssl" -eq 2 && "$letsencrypt_enable" -eq 2 ]]; then
+if [[ "$enable_ssl" -eq 0 && "$letsencrypt_enable" -eq 0 ]]; then
 cat << EOF > /etc/apache2/sites-available/$domain.conf
 <VirtualHost localhost:8089>
 
@@ -1455,7 +1455,7 @@ a2ensite $domain.conf
 systemctl restart nginx apache2
 echo $WEB_SITE_CREATED
 read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-    elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 2 ]]; then
+    elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 0 ]]; then
 cat << EOF > /etc/apache2/sites-available/$domain.conf
 <VirtualHost localhost:8443>
 
@@ -1878,6 +1878,7 @@ line=$(printf "%${cols}s" | tr ' ' '=')
             mv /opt/ccp/update.sh /tmp/update.sh
             clear
             /tmp/update.sh
+            mv /tmp/lang.config /opt/ccp/lang.config
             exit 0
             ;;
         0)
