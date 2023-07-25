@@ -1395,6 +1395,12 @@ web_site_create () {
   ssl_path=$4
   ssl_key_path=$5
   mkdir /var/www/html/$domain
+cat << EOF > /var/www/html/$domain/index.html
+<html>
+Domain: $domain
+This host used <a href="https://github.com/NagibatorIgor/ccp" target="_blank">Console Control Panel</a>
+</html>
+EOF
   chown -R www-data:www-data /var/www/html/$domain
   chmod -R 755 /var/www/html/$domain
 if [[ "$enable_ssl" -eq 0 && "$letsencrypt_enable" -eq 0 ]]; then
@@ -1878,7 +1884,6 @@ line=$(printf "%${cols}s" | tr ' ' '=')
             mv /opt/ccp/update.sh /tmp/update.sh
             clear
             /tmp/update.sh
-            mv /tmp/lang.config /opt/ccp/lang.config
             exit 0
             ;;
         0)
