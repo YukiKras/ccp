@@ -1397,8 +1397,18 @@ web_site_create () {
   mkdir /var/www/html/$domain
 cat << EOF > /var/www/html/$domain/index.html
 <html>
-Domain: $domain
-This host used <a href="https://github.com/NagibatorIgor/ccp" target="_blank">Console Control Panel</a>
+Domain: $domain <br>
+This host used <a href="https://github.com/NagibatorIgor/ccp" target="_blank">Console Control Panel</a> <br>
+<?php
+echo "Current version PHP: " . phpversion();
+echo "<br>";
+echo "PHP status: ";
+if (function_exists('opcache_get_status') && opcache_get_status()['opcache_enabled']) {
+    echo "Enable";
+} else {
+    echo "Disable";
+}
+?>
 </html>
 EOF
   chown -R www-data:www-data /var/www/html/$domain
@@ -1643,14 +1653,18 @@ web_site_delete () {
   dir_delete=$2
   if [[ $dir_delete == "1" ]]; then
         rm /etc/apache2/sites-enabled/$domain.conf
+        rm /etc/apache2/sites-available/$domain.conf
         rm /etc/nginx/sites-enabled/$domain.conf
+        rm /etc/nginx/sites-available/$domain.conf
         systemctl restart nginx apache2
         rm -rf /var/www/html/$domain
         echo $WEB_SITE_DELETED
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
         rm /etc/apache2/sites-enabled/$domain.conf
+        rm /etc/apache2/sites-available/$domain.conf
         rm /etc/nginx/sites-enabled/$domain.conf
+        rm /etc/nginx/sites-available/$domain.conf
         systemctl restart nginx apache2
         echo $WEB_SITE_DELETED
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
@@ -1790,15 +1804,15 @@ change_web_site_php () {
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
     fi
     # Изменение конфигурационного файла для Nginx
-    local nginx_config_file="/etc/nginx/sites-available/$domain"
-    if [ -f "$nginx_config_file" ]; then
-        sed -i "s/fastcgi_pass unix:/run/php/php[0-9.]+/fastcgi_pass unix:/run/php/php${php_version}-fpm.sock/g" "$nginx_config_file"
-        echo "$CHANGE_SUCCSESS"
-        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-    else
-        echo "$MISSING_DOMAIN"
-        read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-    fi
+    #local nginx_config_file="/etc/nginx/sites-available/$domain"
+    #if [ -f "$nginx_config_file" ]; then
+    #    sed -i "s/fastcgi_pass unix:/run/php/php[0-9.]+/fastcgi_pass unix:/run/php/php${php_version}-fpm.sock/g" "$nginx_config_file"
+    #    echo "$CHANGE_SUCCSESS"
+    #    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    #else
+    #    echo "$MISSING_DOMAIN"
+    #    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    #fi
 }
 
 # Основное меню
