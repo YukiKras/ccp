@@ -22,6 +22,7 @@ A list of third-party scripts used can be found [here](https://github.com/Nagiba
 6. Web sites management
 7. VPN management ([Wireguard](https://github.com/angristan/wireguard-install) and [OpenVPN](https://github.com/angristan/openvpn-install))
 8. PHP management
+9. Showing logs
 
 <details>
   <summary>Screenshots</summary>

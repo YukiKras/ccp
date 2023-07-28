@@ -1351,10 +1351,10 @@ if [[ "$question_1" == "1" ]]; then
 
     if [[ "$question_2" == "1" ]]; then
         # Задаем третий вопрос только если пользователь ответил положительно на второй
-        ask_question "$ENTER_SSL_PATH " question_3
+#        ask_question "$ENTER_SSL_PATH " question_3
 
         # Задаем четвертый вопрос только если пользователь ответил положительно на второй
-        ask_question "$ENTER_SSL_KEY_PATH " question_4
+#        ask_question "$ENTER_SSL_KEY_PATH " question_4
     fi
 fi
   web_site_create $domain $question_1 $question_2 $question_3 $question_4
@@ -1488,6 +1488,8 @@ systemctl restart nginx apache2 php*
 echo $WEB_SITE_CREATED
 read -n 1 -s -r -p "$ANYKEY_CONTINUE"
     elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 0 ]]; then
+    read -p "$ENTER_SSL_PATH " ssl_path
+    read -p "$ENTER_SSL_KEY_PATH " ssl_key_path
 cat << EOF > /etc/apache2/sites-available/$domain.conf
 <VirtualHost localhost:8443>
 
@@ -1535,8 +1537,8 @@ server {
         ssl_stapling_verify on;
 
         # TLS 1.3 0-RTT anti-replay
-        if (\$anti_replay = 307) { return 307 https://\$host\$request_uri; }
-        if (\$anti_replay = 425) { return 425; }
+        #if (\$anti_replay = 307) { return 307 https://\$host\$request_uri; }
+        #if (\$anti_replay = 425) { return 425; }
 
         add_header Strict-Transport-Security "max-age=31536000;" always;
 
@@ -1623,8 +1625,8 @@ server {
         ssl_stapling_verify on;
 
         # TLS 1.3 0-RTT anti-replay
-        if (\$anti_replay = 307) { return 307 https://\$host\$request_uri; }
-        if (\$anti_replay = 425) { return 425; }
+        #if (\$anti_replay = 307) { return 307 https://\$host\$request_uri; }
+        #if (\$anti_replay = 425) { return 425; }
 
         add_header Strict-Transport-Security "max-age=31536000;" always;
 
@@ -1656,7 +1658,7 @@ server {
 EOF
 ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
 a2ensite $domain.conf
-certbot certonly --manual -d $domain
+certbot certonly --nginx -d $domain
 echo "listen = /run/php/php8.1-fpm-$domain.sock" >> /etc/php/8.1/fpm/php-fpm.conf
 touch /run/php/php8.1-fpm-$domain.sock
 chown -R www-data:www-data /run/php/php8.1-fpm-$domain.sock
