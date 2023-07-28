@@ -1243,7 +1243,20 @@ web_manage () {
         chown -R www-data:www-data /var/log/apache2/domains/
         chmod -R 755 /var/log/apache2/domains/
         chmod -R 755 /var/log/apache2/domains/*
-        a2enmod proxy rewrite ssl headers proxy_http
+        a2enmod proxy rewrite ssl headers proxy_http proxy_fcgi setenvif
+        rm /etc/apache2/ports.conf
+cat << EOF > /etc/apache2/ports.conf
+Listen 8089
+
+<IfModule ssl_module>
+        Listen 8443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen 8443
+</IfModule>
+EOF
+        systemctl restart apache2
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
         echo "$CANCELL"
@@ -1262,7 +1275,9 @@ web_manage () {
         echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
         curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
         apt update
-        apt install php8.1 php8.1-cgi php8.1-cli php8.1-fpm
+        apt install php8.1 php8.1-cgi php8.1-cli php8.1-fpm libapache2-mod-php8.1
+        a2enconf php8.1-fpm
+        systemctl restart apache2 php8.1-fpm
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
         echo "$CANCELL"
@@ -1365,7 +1380,7 @@ fi
   ;;
   5)
   clear
-  systemctl restart nginx apache2 mysql php8.1-cgi php8.1-fpm
+  systemctl restart nginx apache2 mysql php*
   read -n 1 -s -r -p "$ANYKEY_CONTINUE"
   ;;
   6)
@@ -1399,17 +1414,14 @@ cat << EOF > /var/www/html/$domain/index.html
 <html>
 Domain: $domain <br>
 This host used <a href="https://github.com/NagibatorIgor/ccp" target="_blank">Console Control Panel</a> <br>
-<?php
-echo "Current version PHP: " . phpversion();
-echo "<br>";
-echo "PHP status: ";
-if (function_exists('opcache_get_status') && opcache_get_status()['opcache_enabled']) {
-    echo "Enable";
-} else {
-    echo "Disable";
-}
-?>
+<br><br>
+<a href="http://$domain/phpinfo.php" target="_blank">PHP Info</a>
 </html>
+EOF
+cat << EOF > /var/www/html/$domain/phpinfo.php
+<?php
+phpinfo();
+?>
 EOF
   chown -R www-data:www-data /var/www/html/$domain
   chmod -R 755 /var/www/html/$domain
@@ -1468,7 +1480,11 @@ server {
 EOF
 ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
 a2ensite $domain.conf
-systemctl restart nginx apache2
+echo "listen = /run/php/php8.1-fpm-$domain.sock" >> /etc/php/8.1/fpm/php-fpm.conf
+touch /run/php/php8.1-fpm-$domain.sock
+chown -R www-data:www-data /run/php/php8.1-fpm-$domain.sock
+chmod -R 755 /run/php/php8.1-fpm-$domain.sock
+systemctl restart nginx apache2 php*
 echo $WEB_SITE_CREATED
 read -n 1 -s -r -p "$ANYKEY_CONTINUE"
     elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 0 ]]; then
@@ -1552,7 +1568,11 @@ server {
 EOF
 ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
 a2ensite $domain.conf
-systemctl restart nginx apache2
+echo "listen = /run/php/php8.1-fpm-$domain.sock" >> /etc/php/8.1/fpm/php-fpm.conf
+touch /run/php/php8.1-fpm-$domain.sock
+chown -R www-data:www-data /run/php/php8.1-fpm-$domain.sock
+chmod -R 755 /run/php/php8.1-fpm-$domain.sock
+systemctl restart nginx apache2 php*
 echo $WEB_SITE_CREATED
 read -n 1 -s -r -p "$ANYKEY_CONTINUE"
     elif [[ "$enable_ssl" -eq 1 && "$letsencrypt_enable" -eq 1 ]]; then
@@ -1637,7 +1657,11 @@ EOF
 ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
 a2ensite $domain.conf
 certbot certonly --manual -d $domain
-systemctl restart nginx apache2
+echo "listen = /run/php/php8.1-fpm-$domain.sock" >> /etc/php/8.1/fpm/php-fpm.conf
+touch /run/php/php8.1-fpm-$domain.sock
+chown -R www-data:www-data /run/php/php8.1-fpm-$domain.sock
+chmod -R 755 /run/php/php8.1-fpm-$domain.sock
+systemctl restart nginx apache2 php*
 echo $WEB_SITE_CREATED
 read -n 1 -s -r -p "$ANYKEY_CONTINUE"
     else
@@ -1656,7 +1680,10 @@ web_site_delete () {
         rm /etc/apache2/sites-available/$domain.conf
         rm /etc/nginx/sites-enabled/$domain.conf
         rm /etc/nginx/sites-available/$domain.conf
-        systemctl restart nginx apache2
+        cat "/etc/php/8.1/fpm/php-fpm.conf" | grep -v "listen = /run/php/php8.1-fpm-$domain.sock"
+        rm /run/php/php8.1-fpm-$domain.sock
+        systemctl restart nginx apache2 php*
+        rm -rf /var/log/apache2/domains/$domain*
         rm -rf /var/www/html/$domain
         echo $WEB_SITE_DELETED
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
@@ -1665,7 +1692,10 @@ web_site_delete () {
         rm /etc/apache2/sites-available/$domain.conf
         rm /etc/nginx/sites-enabled/$domain.conf
         rm /etc/nginx/sites-available/$domain.conf
-        systemctl restart nginx apache2
+        cat "/etc/php/8.1/fpm/php-fpm.conf" | grep -v "listen = /run/php/php8.1-fpm-$domain.sock"
+        rm /run/php/php8.1-fpm-$domain.sock
+        systemctl restart nginx apache2 php*
+        rm -rf /var/log/apache2/domains/$domain*
         echo $WEB_SITE_DELETED
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       fi
@@ -1758,8 +1788,9 @@ fi
         5)
             clear
             read -p "$ENTER_DOMAIN " domain
+            read -p "$ENTER_OLD_PHP_VERSION " old_php_version
             read -p "$ENTER_PHP_VERSION " php_version
-            change_web_site_php $domain $php_version
+            change_web_site_php $domain $php_version $old_php_version
             ;;
         0)
             break
@@ -1793,11 +1824,19 @@ install_php_plugin () {
 change_web_site_php () {
     domain=$1
     php_version=$2
+    old_php_version=$3
 
     # Изменение конфигурационного файла для Apache
     local apache_config_file="/etc/apache2/sites-available/$domain.conf"
     if [ -f "$apache_config_file" ]; then
         sed -i "s/php[0-9.]+/php${php_version}/g" "$apache_config_file"
+        cat "/etc/php/$old_php_version/fpm/php-fpm.conf" | grep -v "listen = /run/php/php$old_php_version-fpm-$domain.sock"
+        rm /run/php/php$old_php_version-fpm-$domain.sock
+        echo "listen = /run/php/php$php_version-fpm-$domain.sock" >> /etc/php/$php_version/fpm/php-fpm.conf
+        touch /run/php/php$php_version-fpm-$domain.sock
+        chown -R www-data:www-data /run/php/php$php_version-fpm-$domain.sock
+        chmod -R 755 /run/php/php$php_version-fpm-$domain.sock
+        systemctl restart apache2 php$php_version-fpm
         echo "$CHANGE_SUCCSESS"
     else
         echo "$MISSING_DOMAIN"
@@ -1813,6 +1852,74 @@ change_web_site_php () {
     #    echo "$MISSING_DOMAIN"
     #    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
     #fi
+}
+
+log_menu () {
+  while true; do
+  clear
+  cols=$(tput cols)
+line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    clear
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
+    echo ""
+    echo $line
+    echo ""
+    echoc "$SELECT_ACTION" $width
+    echo ""
+    echo $line
+    echo ""
+    echo "              1. $LOG_MENU1"
+    echo "              2. $LOG_MENU2"
+    echo "              3. $LOG_MENU3"
+    echo "              4. $LOG_MENU4"
+    echo "              5. $LOG_MENU5"
+    echo "              0. $BACK"
+    tput cup $(tput lines) 0
+    read -p "$ENTER_NUMBER" choice
+
+    case $choice in
+    1)
+    clear
+    systemctl status nginx apache2 mysql php*
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    ;;
+    2)
+    clear
+    read -p "$ENTER_DOMAIN " domain
+    cat /var/log/apache2/domains/$domain.error.log
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    ;;
+    3)
+    clear
+    read -p "$ENTER_DOMAIN " domain
+    cat /var/log/apache2/domains/$domain.log
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    ;;
+    4)
+    clear
+    tput cup $(tput lines) 0
+    read -p "$ENTER_PHP_VERSION " version
+    cat /var/log/php$version-fpm.log
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    ;;
+    5)
+    clear
+    cat /root/.bash_history
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    ;;
+    0)
+          break
+          ;;
+    *)
+          echo "$FAIL_CHOISE"
+          ;;
+    esac
+    done
 }
 
 # Основное меню
@@ -1860,6 +1967,7 @@ line=$(printf "%${cols}s" | tr ' ' '=')
     echo ""
     echo "              9. $MAIN_MENU9"
     echo "              10. $MAIN_MENU10"
+    echo "              11. $MAIN_MENU11"
     echo "              0. $LEXIT"
 
     tput cup $(tput lines) 0
@@ -1899,6 +2007,9 @@ line=$(printf "%${cols}s" | tr ' ' '=')
             clear
             /tmp/update.sh
             exit 0
+            ;;
+        11)
+            log_menu
             ;;
         0)
             clear
