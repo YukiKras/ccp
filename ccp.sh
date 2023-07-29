@@ -1352,7 +1352,7 @@ if [[ "$question_1" == "1" ]]; then
     if [[ "$question_2" == "1" ]]; then
         # Задаем третий вопрос только если пользователь ответил положительно на второй
 #        ask_question "$ENTER_SSL_PATH " question_3
-
+echo " "
         # Задаем четвертый вопрос только если пользователь ответил положительно на второй
 #        ask_question "$ENTER_SSL_KEY_PATH " question_4
     fi

@@ -44,7 +44,7 @@ In the future, it is planned to add CentOS support
 
 Enter:
 ```
-wget https://raw.githubusercontent.com/NagibatorIgor/ccp/main/installc%D1%81p.sh
+wget https://raw.githubusercontent.com/NagibatorIgor/ccp/main/installccp.sh
 ```
 and
 ```
