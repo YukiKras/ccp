@@ -6,7 +6,7 @@
 + DNS Management
 + Installing Wordpress
 + Configuring custom nginx and apache web templates
-+ Control of the following scheme (instead of Dovecot will be exim):
++ Control of the following scheme:
 
 ![Mail Implementation](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/mail_roadmap.jpg)
 

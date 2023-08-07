@@ -23,6 +23,7 @@ A list of third-party scripts used can be found [here](https://github.com/Nagiba
 7. VPN management ([Wireguard](https://github.com/angristan/wireguard-install) and [OpenVPN](https://github.com/angristan/openvpn-install))
 8. PHP management
 9. Showing logs
+10. Autoinstall Wordpress
 
 <details>
   <summary>Screenshots</summary>

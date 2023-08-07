@@ -61,3 +61,9 @@ echo "Select langluage:"
 echo $lang_code > /opt/ccp/lang.config  # Запись выбранного языка в файл
 
 echo "The installation has been completed successfully. Use ccp to bring up the control panel. If it doesn't work, try restarting the server."
+    read -p "Like reboot? (1 - Yes, 2 - No): " -n 1 apply_changes
+    if [[ $apply_changes == "1" ]]; then
+        reboot
+    else
+    echo " "
+    fi
