@@ -58,6 +58,7 @@ external_ip=$(wget -qO- https://ipinfo.io/ip)
                 show_network_settings
                 ;;
             2)
+                clear
                 echo "$SETTING_INTERNET"
                 read -p "$ENTER_INTERFACE" interface_name
                 echo "1. DHCP"
@@ -1330,6 +1331,7 @@ EOF
     echo "              5. $WEB_MANAGE_MENU5"
     echo "              6. $WEB_MANAGE_MENU6"
     echo "              7. $WEB_MANAGE_MENU7"
+    echo "              7. $WEB_MANAGE_MENU8"
     echo "              0. $BACK"
     echo ""
     echo $line
@@ -1425,7 +1427,6 @@ for (( i=0; i<${#scripts[@]}; i++ )); do
 done
 
 # Запросите у пользователя выбрать скрипт с помощью числа
-tput cup $(tput lines) 0
   read -p "$ENTER_NUMBER" selection
 
 # Проверьте, что введенное значение является числом и находится в диапазоне допустимых значений
@@ -1455,9 +1456,8 @@ for (( i=0; i<${#scripts[@]}; i++ )); do
 done
 
 # Запросите у пользователя выбрать скрипт с помощью числа
-tput cup $(tput lines) 0
   read -p "$ENTER_NUMBER" selection
-
+fi
 # Проверьте, что введенное значение является числом и находится в диапазоне допустимых значений
 if [[ $selection =~ ^[0-9]+$ && $selection -ge 0 && $selection -lt ${#scripts[@]} ]]; then
   selected_script="${scripts[$selection]}"
@@ -1509,18 +1509,19 @@ for (( i=0; i<${#scripts[@]}; i++ )); do
 done
 echo $line
 echo "$CMS_TEMLATES_LIST"
-scripts_dir="/opt/ccp/web_templates/cms"
+echo "Wordpress"
+#scripts_dir="/opt/ccp/web_templates/cms"
 
 # Получите список скриптов в папке
-scripts=( "$scripts_dir"/*.sh )
+#scripts=( "$scripts_dir"/*.sh )
 
 # Переберите каждый скрипт в папке
-for (( i=0; i<${#scripts[@]}; i++ )); do
-  script="${scripts[$i]}"
+#for (( i=0; i<${#scripts[@]}; i++ )); do
+#  script="${scripts[$i]}"
   
   # Выведите информацию о скрипте с использованием ключа description
-  echo "[$i] $($script description)"
-done
+#  echo "[$i] $($script description)"
+#done
   tput cup $(tput lines) 0
   read -p "$ENTER_NUMBER" choice
   case $choice in
@@ -1938,19 +1939,8 @@ line=$(printf "%${cols}s" | tr ' ' '=')
     echo "              0. $BACK"
     echo $line
     echo ""
-    php_versions=$(ls /usr/bin/php*)
-
-if [ -n "$php_versions" ]; then
-    echo "$INSTALLED_PHP "
-    for version in $php_versions; do
-        version_number=$(php -r "echo PHP_VERSION;" -- "$version" 2>/dev/null)
-        if [ -n "$version_number" ]; then
-            echo "$version_number"
-        fi
-    done
-else
-    echo "$UNKNOW_ERROR"
-fi
+    echo "$INSTALLED_PHP"
+    ls -1 /etc/php/
     tput cup $(tput lines) 0
     read -p "$ENTER_NUMBER" choice
 
