@@ -1341,23 +1341,23 @@ EOF
   read -p "$ENTER_NUMBER" choice
   case $choice in
   1)
-  clear
-  tput cup $(tput lines) 0
-  read -p "$ENTER_DOMAIN " domain
-  ask_question "$LIKE_SSL " question_1
-if [[ "$question_1" == "1" ]]; then
+#  clear
+#  tput cup $(tput lines) 0
+#  read -p "$ENTER_DOMAIN " domain
+#  ask_question "$LIKE_SSL " question_1
+#if [[ "$question_1" == "1" ]]; then
     # Задаем второй вопрос только если пользователь ответил положительно на первый
-    ask_question "$LIKE_LTSENCRYPT " question_2
+#    ask_question "$LIKE_LTSENCRYPT " question_2
 
-    if [[ "$question_2" == "1" ]]; then
+#    if [[ "$question_2" == "1" ]]; then
         # Задаем третий вопрос только если пользователь ответил положительно на второй
 #        ask_question "$ENTER_SSL_PATH " question_3
-echo " "
+#echo " "
         # Задаем четвертый вопрос только если пользователь ответил положительно на второй
 #        ask_question "$ENTER_SSL_KEY_PATH " question_4
-    fi
-fi
-  web_site_create $domain $question_1 $question_2 $question_3 $question_4
+#    fi
+#fi
+  web_site_create #$domain $question_1 $question_2 $question_3 $question_4
   ;;
   2)
   clear
@@ -1394,10 +1394,7 @@ fi
   php_manage
   ;;
   8)
-  clear
-  tput cup $(tput lines) 0
-  read -p "$ENTER_DOMAIN " domain
-  source /opt/ccp/web_templates/http_php.sh create_site
+  web_templates_manage
   ;;
   0)
   break
@@ -1410,6 +1407,146 @@ fi
 }
 
 web_site_create () {
+clear
+tput cup $(tput lines) 0
+read -p "$ENTER_DOMAIN " domain
+# Определите путь к папке со скриптами
+scripts_dir="/opt/ccp/web_templates/web_config"
+
+# Получите список скриптов в папке
+scripts=( "$scripts_dir"/*.sh )
+
+# Переберите каждый скрипт в папке
+for (( i=0; i<${#scripts[@]}; i++ )); do
+  script="${scripts[$i]}"
+  
+  # Выведите информацию о скрипте с использованием ключа description
+  echo "[$i] $($script description)"
+done
+
+# Запросите у пользователя выбрать скрипт с помощью числа
+tput cup $(tput lines) 0
+  read -p "$ENTER_NUMBER" selection
+
+# Проверьте, что введенное значение является числом и находится в диапазоне допустимых значений
+if [[ $selection =~ ^[0-9]+$ && $selection -ge 0 && $selection -lt ${#scripts[@]} ]]; then
+  selected_script="${scripts[$selection]}"
+  
+  # Запустите выбранный скрипт
+  source $selected_script create_site
+else
+  echo "$FAIL_CHOISE"
+fi
+
+read -p "$LIKE_WP " -n 1 apply_changes
+    if [[ $apply_changes == "1" ]]; then
+# Определите путь к папке со скриптами
+scripts_dir="/opt/ccp/web_templates/cms"
+
+# Получите список скриптов в папке
+scripts=( "$scripts_dir"/*.sh )
+
+# Переберите каждый скрипт в папке
+for (( i=0; i<${#scripts[@]}; i++ )); do
+  script="${scripts[$i]}"
+  
+  # Выведите информацию о скрипте с использованием ключа description
+  echo "[$i] $($script description)"
+done
+
+# Запросите у пользователя выбрать скрипт с помощью числа
+tput cup $(tput lines) 0
+  read -p "$ENTER_NUMBER" selection
+
+# Проверьте, что введенное значение является числом и находится в диапазоне допустимых значений
+if [[ $selection =~ ^[0-9]+$ && $selection -ge 0 && $selection -lt ${#scripts[@]} ]]; then
+  selected_script="${scripts[$selection]}"
+  
+  # Запустите выбранный скрипт
+  source $selected_script 
+else
+  echo "$FAIL_CHOISE"
+fi
+}
+
+web_templates_manage () {
+  while true; do
+    clear
+    cols=$(tput cols)
+    line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
+    echo ""
+    echo $line
+    echo ""
+    echoc "$SELECT_ACTION" $width
+    echo ""
+    echo $line
+    echo ""
+    echo "              1. $WEB_TEMLATES_MENU1"
+    echo "              2. $WEB_TEMLATES_MENU2"
+    echo "              0. $BACK"
+    echo ""
+    echo $line
+    echo ""
+    echo "$WEB_CONFIG_TEMLATES_LIST"
+    # Определите путь к папке со скриптами
+scripts_dir="/opt/ccp/web_templates/web_config"
+
+# Получите список скриптов в папке
+scripts=( "$scripts_dir"/*.sh )
+
+# Переберите каждый скрипт в папке
+for (( i=0; i<${#scripts[@]}; i++ )); do
+  script="${scripts[$i]}"
+  
+  # Выведите информацию о скрипте с использованием ключа description
+  echo "[$i] $($script description)"
+done
+echo $line
+echo "$CMS_TEMLATES_LIST"
+scripts_dir="/opt/ccp/web_templates/cms"
+
+# Получите список скриптов в папке
+scripts=( "$scripts_dir"/*.sh )
+
+# Переберите каждый скрипт в папке
+for (( i=0; i<${#scripts[@]}; i++ )); do
+  script="${scripts[$i]}"
+  
+  # Выведите информацию о скрипте с использованием ключа description
+  echo "[$i] $($script description)"
+done
+  tput cup $(tput lines) 0
+  read -p "$ENTER_NUMBER" choice
+  case $choice in
+  1)
+  clear
+  tput cup $(tput lines) 0
+  read -p "$ENTER_URL " template_url
+  wget -P /opt/ccp/web_templates/web_config $template_url
+  ;;
+  2)
+  clear
+  tput cup $(tput lines) 0
+  read -p "$ENTER_URL " template_url
+  wget -P /opt/ccp/web_templates/cms $template_url
+  ;;
+  0)
+  break
+  ;;
+  *)
+  echo "$FAIL_CHOISE"
+  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+  esac
+done
+}
+
+web_site_create_old () {
   domain=$1
   enable_ssl=$2
   letsencrypt_enable=$3
@@ -1884,7 +2021,7 @@ change_web_site_php () {
     # Изменение конфигурационного файла для Apache
     local apache_config_file="/etc/apache2/sites-available/$domain.conf"
     if [ -f "$apache_config_file" ]; then
-        sed -i "s/php[0-9.]+/php${php_version}/g" "$apache_config_file"
+        sed -i "s/php${old_php_version}/php${php_version}/g" "$apache_config_file"
         cat "/etc/php/$old_php_version/fpm/php-fpm.conf" | grep -v "listen = /run/php/php$old_php_version-fpm-$domain.sock"
         rm /run/php/php$old_php_version-fpm-$domain.sock
         echo "listen = /run/php/php$php_version-fpm-$domain.sock" >> /etc/php/$php_version/fpm/php-fpm.conf

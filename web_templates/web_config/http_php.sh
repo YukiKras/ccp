@@ -1,4 +1,9 @@
 #!/bin/bash
+
+description () {
+    echo "$HTTP_PHP_TEMPLATES_DESCRIPTION"
+}
+
 create_site () {
 mkdir /var/www/html/$domain
 cat << EOF > /var/www/html/$domain/index.html
@@ -110,6 +115,8 @@ if [[ $1 == "create_site" ]]; then
     create_site
 elif [[ $1 == "delete_site" ]]; then
     delete_site
+elif [[ $1 == "description" ]]; then
+    description
 else
     echo "$UNKNOW_ERROR"
 fi

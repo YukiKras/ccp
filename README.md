@@ -24,6 +24,7 @@ A list of third-party scripts used can be found [here](https://github.com/Nagiba
 8. PHP management
 9. Showing logs
 10. Autoinstall Wordpress
+11. Custom web templates config support
 
 <details>
   <summary>Screenshots</summary>
