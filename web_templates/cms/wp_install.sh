@@ -35,7 +35,7 @@ if ! command -v mysql &> /dev/null; then
         wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb -P /tmp
         dpkg -i /tmp/mysql-apt-config_0.8.22-1_all.deb
         apt update 
-        apt install mysql-server
+        apt install mysql-server php8.1-mysql
         rm /tmp/mysql-apt-config_0.8.22-1_all.deb
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
@@ -46,6 +46,7 @@ if ! command -v mysql &> /dev/null; then
       else
       echo " "
       fi
+      echo ""
       echo "$ENTER_WP_CONF"
       read -p "$ENTER_EMAIL " wpemail
       read -p "$ENTER_USERNAME " wpuser
@@ -56,14 +57,14 @@ if ! command -v mysql &> /dev/null; then
       read -p "$ENTER_DB_NAME " database_mysql_name
       create_mysql_db $username_mysql $password_user_mysql $database_mysql_name
       wget -P /tmp http://wordpress.org/latest.tar.gz
-      tar zxf /tmp/latest.tar.gz
+      tar zxf /tmp/latest.tar.gz -C /tmp
       rm -rf /var/www/html/$domain/*
       mv /tmp/wordpress/* /var/www/html/$domain/
       wget -O /tmp/wp.keys https://api.wordpress.org/secret-key/1.1/salt/
       sed -e "s/localhost/"localhost"/" -e "s/database_name_here/"$database_mysql_name"/" -e "s/username_here/"$username_mysql"/" -e "s/password_here/"$password_user_mysql"/" /var/www/html/$domain/wp-config-sample.php > /var/www/html/$domain/wp-config.php
       sed -i '/#@-/r /tmp/wp.keys' /var/www/html/$domain/wp-config.php
       sed -i "/#@+/,/#@-/d" /var/www/html/$domain/wp-config.php
-      curl -d "weblog_title=$domain&user_name=$wpuser&admin_password=$wppass&admin_password2=$wppass&admin_email=$wpemail" http://$siteurl/wp-admin/install.php?step=2
+      curl -d "weblog_title=$domain&user_name=$wpuser&admin_password=$wppass&admin_password2=$wppass&admin_email=$wpemail" http://$domain/wp-admin/install.php?step=2
       rm -rf /tmp/wordpress
       rm /tmp/latest.tar.gz
       rm /tmp/wp.keys

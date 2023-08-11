@@ -530,15 +530,20 @@ done
 
 create_mysql_users () {
   clear
+  username_mysql=$1
+  password_user_mysql=$2
   tput cup $(tput lines) 0
   read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+  # Переменные для подключения к MySQL
+  MYSQL_HOST="localhost"
+  MYSQL_USER="root"
+  QUERY="SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');"
+  mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
+
   echo
-    clear
-    username_mysql=$1
-    password_user_mysql=$2
-    
+    clear  
     # Проверка существования пользователя
-    exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
+    #exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
     
     if [ $exists -eq 1 ]; then
         echo "$MYSQL_USER_EXISTS"
@@ -546,11 +551,15 @@ create_mysql_users () {
     fi
     
     # Создание пользователя
-    mysql -u root -p $MYSQL_PASSWORD -e "CREATE USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';"
+    #mysql -u root -p $MYSQL_PASSWORD -e "CREATE USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';"
+    QUERY="CREATE USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql');"
+    mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
     
     # Обновление привилегий
-    mysql -u root -p $MYSQL_PASSWORD -e "FLUSH PRIVILEGES;"
-    
+    #mysql -u root -p $MYSQL_PASSWORD -e "FLUSH PRIVILEGES;"
+    QUERY="FLUSH PRIVILEGES;"
+    mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
+
     echo "$CHANGE_SUCCSESS"
     read -n 1 -s -r -p "$ANYKEY_CONTINUE"
 
@@ -563,9 +572,12 @@ delete_mysql_users () {
   echo
     clear
     username_mysql=$1
-    
+    MYSQL_HOST="localhost"
+  MYSQL_USER="root"
+  QUERY="SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');"
+  mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
     # Проверка существования пользователя
-    exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
+    #exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
     
     if [ $exists -eq 0 ]; then
         echo "$MYSQL_USER_NON_EXISTS"
@@ -573,11 +585,14 @@ delete_mysql_users () {
     fi
     
     # Удаление пользователя
-    mysql -u root -p $MYSQL_PASSWORD -e "DROP USER '$username_mysql'@'localhost';"
+    #mysql -u root -p $MYSQL_PASSWORD -e "DROP USER '$username_mysql'@'localhost';"
+      QUERY="DROP USER '$username_mysql'@'localhost');"
+  mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
     
     # Обновление привилегий
-    mysql -u root -p $MYSQL_PASSWORD -e "FLUSH PRIVILEGES;"
-    
+    #mysql -u root -p $MYSQL_PASSWORD -e "FLUSH PRIVILEGES;"
+    QUERY="FLUSH PRIVILEGES;"
+    mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
     echo "$CHANGE_SUCCSESS"
     read -n 1 -s -r -p "$ANYKEY_CONTINUE"
 
@@ -592,16 +607,23 @@ change_mysql_users_password () {
   username_mysql=$1
   password_user_mysql=$2
 # Проверка существования пользователя
-    exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
-    
+    #exists=$(mysql -u root -p $MYSQL_PASSWORD -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');")
+    MYSQL_HOST="localhost"
+  MYSQL_USER="root"
+  QUERY="SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$username_mysql');"
+  mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
     if [ $exists -eq 0 ]; then
         echo "$MYSQL_USER_NON_EXISTS"
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
     fi
     
     # Удаление пользователя
-    mysql -u root -p $MYSQL_PASSWORD -e "ALTER USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';"
-    mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
+    QUERY="ALTER USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';"
+    mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
+    #mysql -u root -p $MYSQL_PASSWORD -e "ALTER USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';"
+    QUERY="FLUSH PRIVILEGES;"
+    mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "${QUERY}" --silent
+    #mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
 
 # Проверяем статус выполнения команды MySQL
 if [ $? -eq 0 ]; then
@@ -1257,6 +1279,7 @@ Listen 8089
         Listen 8443
 </IfModule>
 EOF
+        a2dissite 000-default
         systemctl restart apache2
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
@@ -1324,14 +1347,15 @@ EOF
     echo ""
     echo "              1. $WEB_MANAGE_MENU1"
     echo "              2. $WEB_MANAGE_MENU2"
-    echo ""
     echo "              3. $WEB_MANAGE_MENU3"
-    echo "              4. $WEB_MANAGE_MENU4"
     echo ""
+    echo "              4. $WEB_MANAGE_MENU4"
     echo "              5. $WEB_MANAGE_MENU5"
+    echo ""
     echo "              6. $WEB_MANAGE_MENU6"
     echo "              7. $WEB_MANAGE_MENU7"
-    echo "              7. $WEB_MANAGE_MENU8"
+    echo "              8. $WEB_MANAGE_MENU8"
+    echo "              9. $WEB_MANAGE_MENU9"
     echo "              0. $BACK"
     echo ""
     echo $line
@@ -1372,31 +1396,34 @@ EOF
   clear
   tput cup $(tput lines) 0
   read -p "$ENTER_DOMAIN " domain
-  web_site_enable $domain
+  source /opt/ccp/web_templates/cms/wp_install.sh
   ;;
   4)
   clear
   tput cup $(tput lines) 0
   read -p "$ENTER_DOMAIN " domain
-  web_site_disable $domain
+  web_site_enable $domain
   ;;
   5)
+  clear
+  tput cup $(tput lines) 0
+  read -p "$ENTER_DOMAIN " domain
+  web_site_disable $domain
+  ;;
+  6)
   clear
   systemctl restart nginx apache2 mysql php*
   read -n 1 -s -r -p "$ANYKEY_CONTINUE"
   ;;
-  6)
+  7)
   clear
   tput cup $(tput lines) 0
   read -p "$ENTER_DOMAIN " domain
   certbot --nginx -d $domain
   read -n 1 -s -r -p "$ANYKEY_CONTINUE"
   ;;
-  7)
-  php_manage
-  ;;
   8)
-  web_templates_manage
+  php_manage
   ;;
   0)
   break
