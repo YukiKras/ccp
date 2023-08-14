@@ -1251,6 +1251,7 @@ web_manage () {
       else
         echo "$CANCELL"
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+        break
       fi
       else
       echo " "
@@ -1285,6 +1286,7 @@ EOF
       else
         echo "$CANCELL"
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+        break
       fi
       else
       echo " "
@@ -1299,13 +1301,14 @@ EOF
         echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
         curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
         apt update
-        apt install php8.1 php8.1-cgi php8.1-cli php8.1-fpm libapache2-mod-php8.1
+        apt install php8.1 php8.1-cgi php8.1-cli php8.1-fpm libapache2-mod-php8.1 php8.1-curl php8.1-dom php8.1-imagick php8.1-mbstring php8.1-zip php8.1-gd php8.1-intl php8.1-mysql php8.1-common
         a2enconf php8.1-fpm
         systemctl restart apache2 php8.1-fpm
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
       else
         echo "$CANCELL"
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+        break
       fi
       else
       echo " "
@@ -1321,6 +1324,7 @@ EOF
       else
         echo "$CANCELL"
         read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+        break
       fi
       else
       echo " "
