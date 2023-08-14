@@ -13,9 +13,9 @@ clear
   password_user_mysql=$2
   database_mysql_name=$3
 # Создание базы данных
-mysql -u root -p $MYSQL_PASSWORD -e "CREATE DATABASE $database_mysql_name;"
-mysql -u root -p $MYSQL_PASSWORD -e "grant all privileges on $database_mysql_name.localhost to $username_mysql@localhost identified by '$password_user_mysql';"
-mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
+mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "CREATE DATABASE $database_mysql_name;" --silent
+mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "grant all privileges on $database_mysql_name.localhost to $username_mysql@localhost identified by '$password_user_mysql';" --silent
+mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "flush privileges;" --silent
 if [ $? -eq 0 ]; then
   echo "$CHANGE_SUCCSESS"
   read -n 1 -s -r -p "$ANYKEY_CONTINUE"

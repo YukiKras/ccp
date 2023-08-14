@@ -1466,33 +1466,35 @@ else
   echo "$FAIL_CHOISE"
 fi
 
+clear
 read -p "$LIKE_WP " -n 1 apply_changes
     if [[ $apply_changes == "1" ]]; then
+    source /opt/ccp/web_templates/cms/wp_ibstall.sh
 # Определите путь к папке со скриптами
-scripts_dir="/opt/ccp/web_templates/cms"
-
-# Получите список скриптов в папке
-scripts=( "$scripts_dir"/*.sh )
-
-# Переберите каждый скрипт в папке
-for (( i=0; i<${#scripts[@]}; i++ )); do
-  script="${scripts[$i]}"
-  
-  # Выведите информацию о скрипте с использованием ключа description
-  echo "[$i] $($script description)"
-done
-
-# Запросите у пользователя выбрать скрипт с помощью числа
-  read -p "$ENTER_NUMBER" selection
-fi
-# Проверьте, что введенное значение является числом и находится в диапазоне допустимых значений
-if [[ $selection =~ ^[0-9]+$ && $selection -ge 0 && $selection -lt ${#scripts[@]} ]]; then
-  selected_script="${scripts[$selection]}"
-  
-  # Запустите выбранный скрипт
-  source $selected_script 
+#scripts_dir="/opt/ccp/web_templates/cms"
+#
+## Получите список скриптов в папке
+#scripts=( "$scripts_dir"/*.sh )
+#
+## Переберите каждый скрипт в папке
+#for (( i=0; i<${#scripts[@]}; i++ )); do
+#  script="${scripts[$i]}"
+#  
+#  # Выведите информацию о скрипте с использованием ключа description
+#  echo "[$i] $($script description)"
+#done
+#
+## Запросите у пользователя выбрать скрипт с помощью числа
+#  read -p "$ENTER_NUMBER" selection
+#fi
+## Проверьте, что введенное значение является числом и находится в диапазоне допустимых значений
+#if [[ $selection =~ ^[0-9]+$ && $selection -ge 0 && $selection -lt ${#scripts[@]} ]]; then
+#  selected_script="${scripts[$selection]}"
+#  
+#  # Запустите выбранный скрипт
+#  source $selected_script 
 else
-  echo "$FAIL_CHOISE"
+  echo " "
 fi
 }
 
