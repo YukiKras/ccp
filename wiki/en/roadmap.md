@@ -4,8 +4,7 @@
 
 + Updated wiki
 + DNS Management
-+ Installing Wordpress
-+ Configuring custom nginx and apache web templates
++ Autoinstall Nextcloud in https mod
 + Control of the following scheme:
 
 ![Mail Implementation](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/mail_roadmap.jpg)

@@ -1471,9 +1471,9 @@ else
 fi
 
 clear
-read -p "$LIKE_WP " -n 1 apply_changes
-    if [[ $apply_changes == "1" ]]; then
-    source /opt/ccp/web_templates/cms/wp_ibstall.sh
+#read -p "$LIKE_WP " -n 1 apply_changes
+#    if [[ $apply_changes == "1" ]]; then
+#    source /opt/ccp/web_templates/cms/wp_ibstall.sh
 # Определите путь к папке со скриптами
 #scripts_dir="/opt/ccp/web_templates/cms"
 #

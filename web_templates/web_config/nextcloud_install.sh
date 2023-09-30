@@ -4,10 +4,6 @@ description () {
     echo "$NEXTCLOUD_TEMPLATES_DESCRIPTION"
 }
 
-create_mysql_db () {
-
-}
-
 create_site () {
 # Установка зависимостей
 if ! command -v mysql &> /dev/null; then
@@ -49,11 +45,12 @@ clear
   password_user_mysql=$2
   database_mysql_name=$3
 # Создание базы данных
-mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "CREATE DATABASE $database_mysql_name;" --silent
-mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "CREATE USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';" --silent
-mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "GRANT ALL PRIVILEGES ON $database_mysql_name.* TO '$username_mysql'@'localhost' WITH GRANT OPTION;" --silent
+mysql -u "root" -p $MYSQL_PASSWORD -e "CREATE DATABASE $database_mysql_name;" --silent
+mysql -u "root" -p $MYSQL_PASSWORD -e "CREATE USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';" --silent
+mysql -u "root" -p $MYSQL_PASSWORD -e "GRANT ALL PRIVILEGES ON $database_mysql_name.* TO '$username_mysql'@'localhost' WITH GRANT OPTION;" --silent
 #mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "grant all privileges on $database_mysql_name.* to $username_mysql@localhost identified by '$password_user_mysql';" --silent
-mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "flush privileges;" --silent
+#mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "flush privileges;" --silent
+mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
 if [ $? -eq 0 ]; then
   echo "$CHANGE_SUCCSESS"
   read -n 1 -s -r -p "$ANYKEY_CONTINUE"
@@ -68,13 +65,13 @@ wget https://download.nextcloud.com/server/releases/latest.tar.bz2
 tar -xvf latest.tar.bz2
 mv nextcloud /var/www/html/
 mv /var/www/html/nextcloud /var/www/html/$domain
-chown -R www-data:www-data /var/www/html/nextcloud
+chown -R www-data:www-data /var/www/html/$domain
 chmod -R 755 /var/www/html/$domain
 
 cat <<EOF > /etc/nginx/sites-available/$domain.conf
 upstream php-handler {
-    server 127.0.0.1:9000;
-    #server unix:/var/run/php/php8.1-fpm.sock;
+    #server 127.0.0.1:9000;
+    server unix:/var/run/php/php8.1-fpm.sock;
 }
 
 # Set the `immutable` cache control options only for assets with a cache busting `v` argument
@@ -233,7 +230,8 @@ server {
 
         fastcgi_param modHeadersAvailable true;         # Avoid sending the security headers twice
         fastcgi_param front_controller_active true;     # Enable pretty urls
-        fastcgi_pass php-handler;
+        #fastcgi_pass php-handler;
+        fastcgi_pass unix:/run/php/php8.1-fpm-$domain.sock;
 
         fastcgi_intercept_errors on;
         fastcgi_request_buffering off;
@@ -269,10 +267,16 @@ server {
 }
 EOF
 
-systemctl restart apache2
-
+ln -s /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/
+#a2ensite $domain.conf
+echo "listen = /run/php/php8.1-fpm-$domain.sock" >> /etc/php/8.1/fpm/php-fpm.conf
+touch /run/php/php8.1-fpm-$domain.sock
+chown -R www-data:www-data /run/php/php8.1-fpm-$domain.sock
+chmod -R 755 /run/php/php8.1-fpm-$domain.sock
+systemctl restart nginx apache2 php*
 # Вывод информации об установке
 echo "$NEXTCLOUD_INSTALLED"
+read -n 1 -s -r -p "$ANYKEY_CONTINUE"
 }
 
 if [[ $1 == "create_site" ]]; then
