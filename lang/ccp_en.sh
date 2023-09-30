@@ -158,3 +158,6 @@ export LETSENCRYPT_PHP_TEMPLATES_DESCRIPTION="The same as template #2, but the c
 export ENTER_NUMBER_TEMPLATE="Enter the template number:"
 export WEB_TEMPLATES_MENU1="Download web configuration template"
 export WEB_TEMPLATES_MENU2="Download cms installation template"
+export ENTER_MYSQL_FOR_NC="Enter Mysql setting's for Nextcloud:"
+export NEXTCLOUD_TEMPLATES_DESCRIPTION="Autoinstall Nextcloud (only http, https will be added later)"
+export NEXTCLOUD_INSTALLED="Nextcloud installed, check http://$domain/"

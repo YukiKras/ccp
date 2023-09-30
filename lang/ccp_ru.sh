@@ -158,3 +158,6 @@ export LETSENCRYPT_PHP_TEMPLATES_DESCRIPTION="Тоже самое что и ша
 export ENTER_NUMBER_TEMPLATE="Введите номер шаблона:"
 export WEB_TEMLATES_MENU1="Скачать шаблон веб конфигурации"
 export WEB_TEMLATES_MENU2="Скачать шаблон cms установки"
+export ENTER_MYSQL_FOR_NC="Введите настройки Mysql для Nextcloud:"
+export NEXTCLOUD_TEMPLATES_DESCRIPTION="Атоустановка Nextcloud (пока поддерживается только http, https будет добавлен позже)"
+export NEXTCLOUD_INSTALLED="Nextcloud был установлен, открыть можно его по ссылке http://$domain/"
