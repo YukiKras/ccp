@@ -4,8 +4,6 @@
 
 + Дополнена вики
 + Управление DNS
-+ Установка Wordpress
-+ Настройка кастомных веб шаблонов nginx и apache
 + Управление следующей схемой:
 
 ![Реализация почты](https://raw.githubusercontent.com/NagibatorIgor/ccp/main/screenshots/mail_roadmap.jpg)
