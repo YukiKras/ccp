@@ -1364,7 +1364,7 @@ EOF
     echo ""
     echo $line
     echo ""
-    WEB_SITE_LISTS=$(ls -1 /etc/apache2/sites-enabled/)
+    WEB_SITE_LISTS=$(ls -1 /etc/nginx/sites-enabled/)
     echo "$WEB_SITE_LIST"
     echo $WEB_SITE_LISTS
   tput cup $(tput lines) 0
@@ -1497,9 +1497,9 @@ clear
 #  
 #  # Запустите выбранный скрипт
 #  source $selected_script 
-else
-  echo " "
-fi
+#else
+#  echo " "
+#fi
 }
 
 web_templates_manage () {

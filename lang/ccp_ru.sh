@@ -160,4 +160,4 @@ export WEB_TEMLATES_MENU1="Скачать шаблон веб конфигура
 export WEB_TEMLATES_MENU2="Скачать шаблон cms установки"
 export ENTER_MYSQL_FOR_NC="Введите настройки Mysql для Nextcloud:"
 export NEXTCLOUD_TEMPLATES_DESCRIPTION="Атоустановка Nextcloud (пока поддерживается только http, https будет добавлен позже)"
-export NEXTCLOUD_INSTALLED="Nextcloud был установлен, открыть можно его по ссылке http://$domain/"
+export NEXTCLOUD_INSTALLED="Nextcloud был установлен, не забудьте настроить БД и пользователя Mysql"

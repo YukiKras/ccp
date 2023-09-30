@@ -29,36 +29,36 @@ if ! command -v mysql &> /dev/null; then
       fi
       echo ""
 apt update
-apt install -y php8.1-gd php8.1-json php8.1-mysql php8.1-curl php8.1-mbstring php8.1-intl php8.1-imagick php8.1-xml php8.1-zip
+apt install -y php8.1-gd php8.1-mysql php8.1-curl php8.1-mbstring php8.1-intl php8.1-imagick php8.1-xml php8.1-zip
 
-echo "$ENTER_MYSQL_FOR_NC"
-tput cup $(tput lines) 0
-read -p "$ENTER_USERNAME " username_mysql
-read -p "$ENTER_NEW_PASSWORD " password_user_mysql
-read -p "$ENTER_DB_NAME " database_mysql_name
-clear
-  tput cup $(tput lines) 0
-  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
-  echo
-clear
-  username_mysql=$1
-  password_user_mysql=$2
-  database_mysql_name=$3
-# Создание базы данных
-mysql -u "root" -p $MYSQL_PASSWORD -e "CREATE DATABASE $database_mysql_name;" --silent
-mysql -u "root" -p $MYSQL_PASSWORD -e "CREATE USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';" --silent
-mysql -u "root" -p $MYSQL_PASSWORD -e "GRANT ALL PRIVILEGES ON $database_mysql_name.* TO '$username_mysql'@'localhost' WITH GRANT OPTION;" --silent
-#mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "grant all privileges on $database_mysql_name.* to $username_mysql@localhost identified by '$password_user_mysql';" --silent
-#mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "flush privileges;" --silent
-mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
-if [ $? -eq 0 ]; then
-  echo "$CHANGE_SUCCSESS"
-  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-else
-  echo "$CHANGE_FAILED"
-  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
-  exit
-fi
+#echo "$ENTER_MYSQL_FOR_NC"
+#tput cup $(tput lines) 0
+#read -p "$ENTER_USERNAME " username_mysql
+#read -p "$ENTER_NEW_PASSWORD " password_user_mysql
+#read -p "$ENTER_DB_NAME " database_mysql_name
+#clear
+#  tput cup $(tput lines) 0
+#  read -s -p "$MYSQL_ROOT_PASSWORD_NEED " MYSQL_PASSWORD
+#  echo
+#clear
+#  username_mysql=$1
+#  password_user_mysql=$2
+#  database_mysql_name=$3
+## Создание базы данных
+#mysql -u "root" -p $MYSQL_PASSWORD -e "CREATE DATABASE $database_mysql_name;" --silent
+#mysql -u "root" -p $MYSQL_PASSWORD -e "CREATE USER '$username_mysql'@'localhost' IDENTIFIED BY '$password_user_mysql';" --silent
+#mysql -u "root" -p $MYSQL_PASSWORD -e "GRANT ALL PRIVILEGES ON $database_mysql_name.* TO '$username_mysql'@'localhost' WITH GRANT OPTION;" --silent
+##mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "grant all privileges on $database_mysql_name.* to $username_mysql@localhost identified by '$password_user_mysql';" --silent
+##mysql -h "localhost" -u "root" -p"$MYSQL_PASSWORD" -e "flush privileges;" --silent
+#mysql -u root -p $MYSQL_PASSWORD -e "flush privileges;"
+#if [ $? -eq 0 ]; then
+#  echo "$CHANGE_SUCCSESS"
+#  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+#else
+#  echo "$CHANGE_FAILED"
+#  read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+#  exit
+#fi
 
 # Установка Nextcloud
 wget https://download.nextcloud.com/server/releases/latest.tar.bz2
