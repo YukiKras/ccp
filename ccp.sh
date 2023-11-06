@@ -2137,6 +2137,85 @@ line=$(printf "%${cols}s" | tr ' ' '=')
     done
 }
 
+config_host () {
+while true; do
+clear
+config_file="/etc/ssh/sshd_config"
+permit_root_login=$(grep -E '^PermitRootLogin' "$config_file")
+if [[ $permit_root_login =~ "yes" ]]; then
+    root_login_status="[ON]"
+elif [[ $permit_root_login =~ "no" ]] || [[ $permit_root_login =~ ^# ]]; then
+    root_login_status="[OFF]"
+else
+    root_login_status="[?]"
+fi
+  cols=$(tput cols)
+  line=$(printf "%${cols}s" | tr ' ' '=')
+    width=$(tput cols)
+    clear
+    echoc "   ___                      _        ___   ___ " $width
+    echoc "  / __\___  _ __  ___  ___ | | ___  / __\ / _ |" $width
+    echoc " / /  / _ \| '_ \/ __|/ _ \| |/ _ \/ /   / /_)/" $width
+    echoc "/ /__| (_) | | | \__ \ (_) | |  __/ /___/ ___/ " $width
+    echoc "\____/\___/|_| |_|___/\___/|_|\___\____/\/     " $width
+    echo ""
+    echo $line
+    echo ""
+    echoc "$SELECT_ACTION" $width
+    echo ""
+    echo $line
+    echo ""
+    echo "              1. $root_login_status $CONFIG_HOST_MENU1"
+    echo "              2. $CONFIG_HOST_MENU2"
+    echo "              3. $CONFIG_HOST_MENU3"
+    echo "              0. $BACK"
+    tput cup $(tput lines) 0
+    read -p "$ENTER_NUMBER" choice
+
+    case $choice in
+    1)
+    clear
+    config_file="/etc/ssh/sshd_config"
+    new_value="yes"
+    permit_root_login=$(grep -E '^PermitRootLogin' "$config_file")
+    if [[ $permit_root_login =~ ^# ]]; then
+        echo "PermitRootLogin $new_value" | sudo tee -a "$config_file" >/dev/null
+    else
+        sed -i "s/^PermitRootLogin.*/PermitRootLogin $new_value/" "$config_file"
+    fi
+    echo "$LIKE_REBOOT_SSH"
+                read -p "$APPLY_CHANGE" -n 1 apply_changes
+                if [[ $apply_changes == "1" ]]; then
+                    echo "$APPLYING"
+                    systemctl restart ssh
+                    echo "$CHANGE_SUCCSESS"
+                    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+                else
+                    echo "$CHANGE_FAILED"
+                    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+                fi
+    ;;
+    2)
+    clear
+    echo 'termcapinfo xterm ti@:te@' >> ~/.screenrc
+    echo $CHANGE_SUCCSESS
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    ;;
+    3)
+    clear
+    passwd
+    read -n 1 -s -r -p "$ANYKEY_CONTINUE"
+    ;;
+    0)
+          break
+          ;;
+    *)
+          echo "$FAIL_CHOISE"
+          ;;
+    esac
+    done
+}
+
 # Основное меню
 while true; do
 
@@ -2172,9 +2251,10 @@ line=$(printf "%${cols}s" | tr ' ' '=')
     echo ""
     echo "              1. $MAIN_MENU1"
     echo "              2. $MAIN_MENU2"
-    echo ""
     echo "              3. $MAIN_MENU3"
-    echo "              4. $MAIN_MENU4"
+    echo ""
+    echo "              4. $MAIN_MENU3"
+    echo "              5. $MAIN_MENU4"
 #    echo "              5. $MAIN_MENU5"
     echo "              6. $MAIN_MENU6"
     echo "              7. $MAIN_MENU7"
@@ -2196,9 +2276,12 @@ line=$(printf "%${cols}s" | tr ' ' '=')
             shutdown_host
             ;;
         3)
-            configure_network
+            config_host
             ;;
         4)
+            configure_network
+            ;;
+        5)
             manage_resources
             ;;
 #        5)
